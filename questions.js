@@ -391,7 +391,7 @@ const questions = [
       "There are no individuals in ANN.",
       "An array of bits that encode proper information related to the solution."
     ],
-    "correct": "c"
+    "correct": "b"
   },
   {
     "question": "On a ConvNet, the feature learning:",
