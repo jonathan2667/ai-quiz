@@ -80,7 +80,7 @@ const questions = [
       "the current position of the particle",
       "none of the above"
     ],
-    "correct": "abc"
+    "correct": "b"
   },
   {
     "question": "The limited model capacity of an ANN can be overcome by:",
@@ -501,7 +501,7 @@ const questions = [
       "The preprocessing required in a ConvNet is much lower as compared to other classification algorithms",
       "None of the above"
     ],
-    "correct": "c"
+    "correct": "ac"
   },
   {
     "question": "What can be used when comparing two algorithms?",
@@ -631,7 +631,7 @@ const questions = [
       "The old velocity of the best particle",
       "None of the above."
     ],
-    "correct": "abc"
+    "correct": "b"
   },
   {
     "question": "In computer vision, we apply a filter over an image:",
