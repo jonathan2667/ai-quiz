@@ -786,154 +786,154 @@ const questions = [
 
 
   //////////////////////////////////////////////////////
-  // NEW QUESTIONS ADDED BY ME 
+  // NEW QUESTIONS ADDED
   //////////////////////////////////////////////////////
 
-  // EXAM-MATERIALS SUBJECT
+  // EXAM-MATERIALS SUBJECT   -- Nu stiu daca sunt bune
 
-  /*  {
-      "question": "What is a proper encoding for an individual in Genetic Programming?",
-      "answers": [
-        "a string of bits",
-        "depends on the problem",
-        "a computer program that solves the given problem",
-        "a binary expression"
-      ],
-      "correct": "c"
-    },
-    {
-      "question": "Which one(s) of the following problems can’t be solved by a perceptron?",
-      "answers": [
-        "AND logic",
-        "any problem that implies finding a function",
-        "XOR",
-        "OR logic"
-      ],
-      "correct": "c"
-    },
-    {
-      "question": "What are the main specific features of a particle in PSO optimisation?",
-      "answers": [
-        "Velocity and trace",
-        "Fitness function",
-        "Current position and velocity",
-        "There is no specific feature"
-      ],
-      "correct": "c"
-    },
-    {
-      "question": "Which one of the following representations is NOT proper for the N-Queen problem?",
-      "answers": [
-        "Binary",
-        "Vectors of N integers",
-        "Vectors of N real numbers",
-        "Permutation of N size"
-      ],
-      "correct": "a"
-    },
-    {
-      "question": "What is the fitness function for the N-Queen problem?",
-      "answers": [
-        "The number of queens placed on the same line",
-        "The number of queens placed on the same column",
-        "The number of queens that attack each other",
-        "The difference in absolute value between the number of queens that attack each other on line and the number of queens that attack each other on columns"
-      ],
-      "correct": "c"
-    },
-    {
-      "question": "On what is based the ant colony system?",
-      "answers": [
-        "On an evolutionary schema",
-        "The pheromone trace left by ants",
-        "Inertia and speed",
-        "Identical with PSO"
-      ],
-      "correct": "b"
-    },
-    {
-      "question": "How is propagated the error into an artificial neural network that uses back-propagation?",
-      "answers": [
-        "In the same direction as the input signal",
-        "You don’t compute the error for this algorithm",
-        "In both directions",
-        "It propagates backwards through the network"
-      ],
-      "correct": "d"
-    },
-    {
-      "question": "Using an ANN to decide if a 15×10-pixel black-and-white image contains a circle (structure 150:15:20:2, sigmoid activation), what type of problem is this?",
-      "answers": [
-        "Regression",
-        "Clustering",
-        "Classification",
-        "Dimensionality reduction"
-      ],
-      "correct": "c"
-    },
-    {
-      "question": "In the same ANN (150:15:20:2), how many weights does each neuron in the last layer have (not counting its bias)?",
-      "answers": [
-        "15",
-        "20",
-        "2",
-        "150"
-      ],
-      "correct": "b"
-    },
-    {
-      "question": "On what does the adjustment value of the weights depend when training with back-propagation?",
-      "answers": [
-        "The learning rate and the gradient of the error",
-        "The total number of training epochs",
-        "The random seed used to initialize weights",
-        "The number of hidden layers"
-      ],
-      "correct": "a"
-    },
-    {
-      "question": "Specify the correct statement(s) in a ruled based system in certain environments inference engine with forward-chaining:",
-      "answers": [
-        "The inference engine can draw new conclusions",
-        "Facts are represented in a working memory which is continually updated",
-        "The actions usually involve adding or deleting items from working memory",
-        "Rules are written as left-hand side (LHS) ⇒ right-hand side (RHS)"
-      ],
-      "correct": "bc"
-    },
-    {
-      "question": "For a Genetic Programming algorithm identify the correct statement(s):",
-      "answers": [
-        "Convergence (complete, optimal) through global optima is slow",
-        "Easy to implement",
-        "The solution’s quality depends on the precision of variables involved in the algorithm",
-        "The main disadvantage is that it does depend on parameters"
-      ],
-      "correct": "cd"
-    },
-    {
-      "question": "Which of the following selection methods are commonly used in evolutionary algorithms? (choose all that apply)",
-      "answers": [
-        "Roulette‐wheel selection",
-        "Tournament selection",
-        "Rank‐based selection",
-        "Elitism (truncation) selection",
-        "Random selection",
-        "Gradient‐descent selection"
-      ],
-      "correct": "abcd"
-    },
-    {
-      "question": "In applying a genetic algorithm to select a subset of integer‐engraved balls whose sum is as close as possible to S, which design choices are appropriate? (choose all that apply)",
-      "answers": [
-        "Binary string representation (1 = include, 0 = exclude)",
-        "One‐point crossover and bit‐flip mutation operators",
-        "Fitness = –|(sum of selected balls) – S| (maximize)",
-        "Tournament selection",
-        "Gradient‐descent operator"
-      ],
-      "correct": "abcd"
-    },*/
+  {
+    "question": "What is a proper encoding for an individual in Genetic Programming?",
+    "answers": [
+      "a string of bits",
+      "depends on the problem",
+      "a computer program that solves the given problem",
+      "a binary expression"
+    ],
+    "correct": "c"
+  },
+  {
+    "question": "Which one(s) of the following problems can’t be solved by a perceptron?",
+    "answers": [
+      "AND logic",
+      "any problem that implies finding a function",
+      "XOR",
+      "OR logic"
+    ],
+    "correct": "c"
+  },
+  {
+    "question": "What are the main specific features of a particle in PSO optimisation?",
+    "answers": [
+      "Velocity and trace",
+      "Fitness function",
+      "Current position and velocity",
+      "There is no specific feature"
+    ],
+    "correct": "c"
+  },
+  {
+    "question": "Which one of the following representations is NOT proper for the N-Queen problem?",
+    "answers": [
+      "Binary",
+      "Vectors of N integers",
+      "Vectors of N real numbers",
+      "Permutation of N size"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "What is the fitness function for the N-Queen problem?",
+    "answers": [
+      "The number of queens placed on the same line",
+      "The number of queens placed on the same column",
+      "The number of queens that attack each other",
+      "The difference in absolute value between the number of queens that attack each other on line and the number of queens that attack each other on columns"
+    ],
+    "correct": "c"
+  },
+  {
+    "question": "On what is based the ant colony system?",
+    "answers": [
+      "On an evolutionary schema",
+      "The pheromone trace left by ants",
+      "Inertia and speed",
+      "Identical with PSO"
+    ],
+    "correct": "b"
+  },
+  {
+    "question": "How is propagated the error into an artificial neural network that uses back-propagation?",
+    "answers": [
+      "In the same direction as the input signal",
+      "You don’t compute the error for this algorithm",
+      "In both directions",
+      "It propagates backwards through the network"
+    ],
+    "correct": "d"
+  },
+  {
+    "question": "Using an ANN to decide if a 15×10-pixel black-and-white image contains a circle (structure 150:15:20:2, sigmoid activation), what type of problem is this?",
+    "answers": [
+      "Regression",
+      "Clustering",
+      "Classification",
+      "Dimensionality reduction"
+    ],
+    "correct": "c"
+  },
+  {
+    "question": "In the same ANN (150:15:20:2), how many weights does each neuron in the last layer have (not counting its bias)?",
+    "answers": [
+      "15",
+      "20",
+      "2",
+      "150"
+    ],
+    "correct": "b"
+  },
+  {
+    "question": "On what does the adjustment value of the weights depend when training with back-propagation?",
+    "answers": [
+      "The learning rate and the gradient of the error",
+      "The total number of training epochs",
+      "The random seed used to initialize weights",
+      "The number of hidden layers"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "Specify the correct statement(s) in a ruled based system in certain environments inference engine with forward-chaining:",
+    "answers": [
+      "The inference engine can draw new conclusions",
+      "Facts are represented in a working memory which is continually updated",
+      "The actions usually involve adding or deleting items from working memory",
+      "Rules are written as left-hand side (LHS) ⇒ right-hand side (RHS)"
+    ],
+    "correct": "bc"
+  },
+  {
+    "question": "For a Genetic Programming algorithm identify the correct statement(s):",
+    "answers": [
+      "Convergence (complete, optimal) through global optima is slow",
+      "Easy to implement",
+      "The solution’s quality depends on the precision of variables involved in the algorithm",
+      "The main disadvantage is that it does depend on parameters"
+    ],
+    "correct": "cd"
+  },
+  {
+    "question": "Which of the following selection methods are commonly used in evolutionary algorithms? (choose all that apply)",
+    "answers": [
+      "Roulette‐wheel selection",
+      "Tournament selection",
+      "Rank‐based selection",
+      "Elitism (truncation) selection",
+      "Random selection",
+      "Gradient‐descent selection"
+    ],
+    "correct": "abcd"
+  },
+  {
+    "question": "In applying a genetic algorithm to select a subset of integer‐engraved balls whose sum is as close as possible to S, which design choices are appropriate? (choose all that apply)",
+    "answers": [
+      "Binary string representation (1 = include, 0 = exclude)",
+      "One‐point crossover and bit‐flip mutation operators",
+      "Fitness = –|(sum of selected balls) – S| (maximize)",
+      "Tournament selection",
+      "Gradient‐descent operator"
+    ],
+    "correct": "abcd"
+  },
   {
     "question": "Fuzzify the raw input data for a person of 45 years old (see diagram). What are the membership values (μ) for each fuzzy set?",
     "image": "imageQ1.png",
@@ -944,7 +944,7 @@ const questions = [
       "μ_young = 0.0, μ_adult = 1.0, μ_middle‐age = 0.3, μ_old = 0.0"
     ],
     "correct": "a"
-  }/*,
+  },
   {
     "question": "Which element(s) determine the probability for a new possible element to be added to the solution in an ant colony system? (choose all that apply)",
     "answers": [
@@ -955,7 +955,364 @@ const questions = [
       "Genetic crossover operator"
     ],
     "correct": "abcd"
-  }*/
+  },
+
+  // 2024 SUBJECT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+
+  {
+    "question": "Consider Figure 1, which represents the fuzzy classes for a person’s age. After fuzzifying the raw input data for a 35-year-old, we obtain the value:",
+    "image": "imageQ2.png",
+    "answers": [
+      "μ_young(35) = 0.6; μ_adult(35) = 1; μ_middle_age(35) = 0.3; μ_old(35) = 0",
+      "μ_young(35) = 0; μ_adult(35) = 0.1; μ_middle_age(35) = 0; μ_old(35) = 0",
+      "μ_young(35) = 0.6; μ_adult(35) = 0.1; μ_middle_age(35) = 0.3; μ_old(35) = 0",
+      "None of the above"
+    ],
+    "correct": "b"
+  },
+
+  // 2020 SUBJECT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -- Astea sunt corecte !!
+  {
+    "question": "You have a problem that is NP-hard and you decide to attempt to solve it with Ant Colony Optimisation. In what sort of problem do you need to transform it?",
+    "answers": [
+      "Into a classification problem.",
+      "You don't need to transform it, just let the algorithm do it for you.",
+      "In a problem of identifying the optimal path in an oriented graph.",
+      "Into the knapsack problem."
+    ],
+    "correct": "c"
+  },
+  {
+    "question": "Consider two individuals (represented as permutations) of size 9 and apply an order crossover to them. What is the proper result if the cut points are after the 3rd and 6th position? (Select one or more. Parents are in the image)",
+    "image": "imageQ3.png",
+    "answers": [
+      "[1, 9, 6, 8, 2, 3, 5, 4, 7] and [1, 2, 3, 5, 4, 6, 8, 7, 9]",
+      "[1, 9, 8, 2, 3, 5, 6, 4, 7] and [1, 2, 6, 5, 4, 3, 8, 7, 9]",
+      "[2, 1, 9, 2, 3, 8, 7, 8, 3] and [1, 4, 6, 6, 5, 4, 5, 7, 9]",
+      "[1, 9, 6, 2, 3, 8, 5, 4, 7] and [1, 2, 3, 6, 5, 4, 8, 7, 9]"
+    ],
+    "correct": "d"
+  },
+  {
+    "question": "Many AI methods are based on examples from nature. Particle Swarm Optimisation is based on:",
+    "answers": [
+      "In the theory of evolution.",
+      "The behaviour of birds or murmuration of fish.",
+      "This method is not inspired from nature as other AI methods.",
+      "The random movements of particles."
+    ],
+    "correct": "b"
+  },
+  {
+    "question": "You design an Evolutionary Algorithm for a given problem using a Generationist model. Select the correct properties of such a model that must be reflected within your application:",
+    "answers": [
+      "Each individual survives a generation only.",
+      "A set of parents is totally replaced by the set of offsprings.",
+      "At each generation it creates μ offsprings.",
+      "A bad offspring is replaced by its parent."
+    ],
+    "correct": "abc"
+  },
+  {
+    "question": "In what order during a BFS search will the nodes from the following tree be visited",
+    "image": "imageQ4.png",
+    "answers": [
+      "50, 17, 72, 12, 23, 54, 76, 9, 14, 19, 67",
+      "50, 72, 17, 76, 54, 23, 12, 64, 19, 14, 9",
+      "50, 17, 72, 54, 76, 12, 23, 9, 14, 19, 67",
+      "None of the above"
+    ],
+    "correct": "ab"
+  },
+  {
+    "question": "Choose the correct characteristics for the binary representation, primarily used in Evolutionary Computation:",
+    "answers": [
+      "There is usually an encoder and a decoder that allow the user to understand the stored information.",
+      "Other values can appear within a binary representation but through survival selection and adjustments they are removed.",
+      "These representations are lists of zeros and ones.",
+      "Once a bit reaches a certain value (0 or 1) a cut is performed to preserve the genotype of the individual represented binary."
+    ],
+    "correct": "ac"
+  },
+  {
+    "question": "When computing a velocity for a particle using a PSO method, you have a parameter inertia. Specify the correct properties of this parameter:",
+    "answers": [
+      "Can be constant or descending.",
+      "Forces the particle to move in the same direction until now.",
+      "Forces the particle to move towards its best position.",
+      "Balances the search between global exploration and local exploration."
+    ],
+    "correct": "abd"
+  },
+  {
+    "question": "How do you initialise an Artificial Neural Network?",
+    "answers": [
+      "There is no initialization; the network will learn from the dataset the initial values.",
+      "The inputs will be zero.",
+      "Randomly assign values to the weights.",
+      "Randomly assign values to the outputs."
+    ],
+    "correct": "c"
+  },
+
+  {
+    "question": "You want to train an Artificial Neural Network for a complex classification problem. The information from the dataset is labeled in four classes. Each entry is composed from an array of five attributes and a label. What is a possible structure for this problem?",
+    "answers": [
+      "5 : 6 : 4",
+      "7 : 6 : 4",
+      "5 : 6 : 2",
+      "6 : 4"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "Check the correct affirmations regarding a population of individuals in an Evolutionary algorithm.",
+    "answers": [
+      "The candidates to solutions should be uniformly distributed in the search space (if it is possible).",
+      "The population doesn’t change its contents during the entire run of the algorithm.",
+      "The population is randomly assigned in the beginning of the algorithm.",
+      "The reproduction pool is selected from the current population."
+    ],
+    "correct": "acd"
+  },
+  {
+    "question": "Consider a permutation of n elements as representation for the \"n-Queen\" problem. Please check all the categories where this representation belongs:",
+    "answers": [
+      "non-binary, discrete",
+      "continuous",
+      "tree based",
+      "class-based",
+      "binary"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "Consider the following formula:\n\nv_id = w * v_id + c1 * rand() * (P_bestd – x_id) + c2 * rand() * (G_bestd – x_id)\n\nCheck the correct statements related to this formula:",
+    "answers": [
+      "c1 and c2 will be determined by the algorithm while running.",
+      "v_id is the velocity of a particle.",
+      "You can find in this formula the current position and also the best position of a particle.",
+      "It updates the position of the particle."
+    ],
+    "correct": "bc"
+  },
+  {
+    "question": "Consider the fuzzy classes described by the following diagram. Compute the membership degree of value 10 to both classes (red and green).",
+    "image": "imageQ5.png",
+    "answers": [
+      "μ_red(10) = 0.66 and μ_green(10) = 2.85",
+      "μ_red(10) = 0.25 and μ_green(10) = 0.75",
+      "μ_red(10) = 2 and μ_green(10) = 0.5",
+      "μ_red(10) = 0 and μ_green(10) = 0"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "In a feed forward Artificial Neural Network there are connections between nodes from the same layer.",
+    "answers": [
+      "True",
+      "False"
+    ],
+    "correct": "b"
+  },
+  {
+    "question": "Check some of the possible activation functions from an Artificial Neural Network.",
+    "answers": [
+      "Gaussian function",
+      "Linear function",
+      "Sigmoid function",
+      "Error function",
+      "Constant function"
+    ],
+    "correct": "abce"
+  },
+  {
+    "question": "You attempt to solve a problem that fits a binary representation with a PSO. What will you change in order to conserve the representation while you adapt the particles’ positions using the velocity?",
+    "answers": [
+      "The process of updating the particle's position.",
+      "Reset the particle position every time you get out of the domain.",
+      "Reduce the inertia so the new update position will not exceed the domain.",
+      "The evaluation of the best particle."
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "The Ant Colony Optimisation (based on the social behaviour of ants) has some particularities. Check the correct statements from the following list:",
+    "answers": [
+      "The worst individuals are replaced with the best ones.",
+      "The search is guided by the variation operators towards the ant queen.",
+      "The search operators are constructive ones, adding elements in solution.",
+      "The search is cooperative, guided by the relative quality of individuals."
+    ],
+    "correct": "cd"
+  },
+  {
+    "question": "When adding a new element to the partial solution within an Ant Colony Optimisation Algorithm the following elements can be considered (check all correct ones):",
+    "answers": [
+      "Probability of crossover",
+      "Pheromone matrix",
+      "Coefficient of the trail importance",
+      "Coefficient of visibility importance",
+      "Visibility of the nodes"
+    ],
+    "correct": "bcde"
+  },
+  {
+    "question": "During the fire process within an artificial neuron the following processes take place (order is unimportant):",
+    "answers": [
+      "Performs a simple computation through an activation function",
+      "Compute the weighted sum of inputs",
+      "Compute the difference between the real output and the computed output",
+      "Modify the weights such to obtain better results"
+    ],
+    "correct": "ab"
+  },
+  {
+    "question": "You design an Ant Colony Optimisation algorithm. What are the aspects related to each ant that must be considered?",
+    "answers": [
+      "The ant has a memory",
+      "While constructing the path avoids nodes that already have an ant in them",
+      "Cooperates with other ants through the pheromone trail",
+      "Moves (in the search space) and puts some pheromones on its path"
+    ],
+    "correct": "acd"
+  },
+  {
+    "question": "A solution for a problem that you have is represented as a binary array of 8 elements. After a mutation you get the following mutated offspring: (1,1,1,0,1,0,0,1). Considering that you used a weak mutation, check the possible parent(s).",
+    "answers": [
+      "(1,1,1,0,1,0,0,1)",
+      "(0,0,0,1,0,1,1,0)",
+      "(0,0,1,0,1,0,0,1)",
+      "(1,1,1,0,1,0,1,1)"
+    ],
+    "correct": "ad"
+  },
+  {
+    "question": "A fitness function for a given problem aims to:",
+    "answers": [
+      "Associate a value to each candidate solution.",
+      "Determine if the problem is properly defined.",
+      "Combine individuals with similar characteristics.",
+      "Reflect the adaptation to the environment."
+    ],
+    "correct": "ad"
+  },
+  {
+    "question": "The knowledge base of a RBS in uncertain environments contains:",
+    "answers": [
+      "Representations of the optimum solutions",
+      "Rules",
+      "Facts",
+      "Positions"
+    ],
+    "correct": "bc"
+  },
+  {
+    "question": "The Defuzzification is the transformation each fuzzy region into a crisp value.",
+    "answers": [
+      "True",
+      "False"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "Consider a complete Artificial Neural Network with the structure 4:6:2. How many weights will have the fourth artificial neuron from the hidden layer?",
+    "answers": [
+      "4",
+      "6",
+      "2",
+      "12"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "The coding type of a possible solution influences the following aspects from the Evolutionary Algorithm’s design:",
+    "answers": [
+      "It forces the use of a binary crossover",
+      "The type of variation operators",
+      "The expression of the fitness function",
+      "The number of individuals in the population pool"
+    ],
+    "correct": "bc"
+  },
+  {
+    "question": "You have to choose a stop condition for your PSO algorithm. Check the correct possibilities:",
+    "answers": [
+      "You never stop; this sort of algorithm runs forever adapting itself.",
+      "When you found the parameters c₁ and c₂.",
+      "When you reach a predefined number of iterations.",
+      "After you evaluate the fitness function a predefined number of times."
+    ],
+    "correct": "cd"
+  },
+  {
+    "question": "Check the specific elements for the Particle Swarm Optimisation method:",
+    "answers": [
+      "Inertia",
+      "Memory",
+      "Velocity",
+      "Position"
+    ],
+    "correct": "abcd"
+  },
+  {
+    "question": "In each iteration of an Ant Colony Optimisation Algorithm we have the following steps (order does not matter):",
+    "answers": [
+      "Increase the partial solution by an element.",
+      "Change the pheromone trail on the paths traversed.",
+      "We perform a mutation to the ant’s partial solution.",
+      "Initialisation."
+    ],
+    "correct": "abd"
+  },
+  {
+    "question": "Is cooperation part of a Particle Swarm Optimisation algorithm?",
+    "answers": [
+      "True",
+      "False"
+    ],
+    "correct": "a"
+  },
+  {
+    "question": "How do ants indirectly communicate in an Ant Colony Optimisation algorithm?",
+    "answers": [
+      "They do not communicate indirectly.",
+      "By changing the chemical repository.",
+      "The ants send signals to other ants not to follow them within the partial path.",
+      "Accessing the pheromone matrix."
+    ],
+    "correct": "bd"
+  },
+  {
+    "question": "What is the correspondence of an individual in evolutionary computation?",
+    "answers": [
+      "A metaphor for an animal from a herd of solutions.",
+      "A possible candidate to be a solution for our problem.",
+      "The problem solution evolved by random natural processes.",
+      "A simple artificial lifeform that exists inside the computer, with its aim to solve our problems."
+    ],
+    "correct": "b"
+  },
+  {
+    "question": "Which of the following problems can be solved with a perceptron? (Select one or more)",
+    "answers": [
+      "Facial recognition",
+      "Logic \"AND\"",
+      "Any problem that implies a linear separation of the space",
+      "XOR"
+    ],
+    "correct": "bc"
+  },
+  {
+    "question": "Consider an Artificial Neural Network that must be trained with the Backpropagation algorithm. Check the correct statements for this algorithm:",
+    "answers": [
+      "Modify the structure by adding or subtracting nodes from the hidden layer.",
+      "Distribute the errors on all connections proportional to the weights and modify the weights.",
+      "Forward propagate the information and determine the output of each neuron.",
+      "Establish and backward propagate the error."
+    ],
+    "correct": "bcd"
+  },
 ];
 
 // Total questions for reference
