@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard View -->
+        <div id="dashboard" class="view">
+            <div class="header">
+                <h1 class="title">AI Learning Platform</h1>
+                <p class="subtitle">Master artificial intelligence concepts through structured learning and assessment</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card primary" onclick="showLearning()">
+                    <div class="card-icon">📚</div>
+                    <h3>Learning Modules</h3>
+                    <p>Study AI concepts with guided explanations</p>
+                    <button class="card-btn">Start Learning</button>
+                </div>
+                
+                <div class="dashboard-card secondary" onclick="startNewSession()">
+                    <div class="card-icon">🎯</div>
+                    <h3>New Assessment</h3>
+                    <p>Test your knowledge with comprehensive questions</p>
+                    <button class="card-btn">Take Test</button>
+                </div>
+                
+                <div class="dashboard-card quaternary" onclick="startReviewSession()" id="reviewCard">
+                    <div class="card-icon">🔄</div>
+                    <h3>Review Missed Questions</h3>
+                    <p>Practice questions you got wrong in your last session</p>
+                    <button class="card-btn">Start Review</button>
+                </div>
+                
+                <div class="dashboard-card tertiary" onclick="showHistory()">
+                    <div class="card-icon">📊</div>
+                    <h3>Session History</h3>
+                    <p>Review your progress and past performance</p>
+                    <button class="card-btn">View History</button>
+                </div>
+            </div>
+            
+            <div id="history-section" class="history-section hidden">
+                <h2>Assessment History</h2>
+                <div id="history-list" class="history-list"></div>
+                <button class="back-btn" onclick="hideHistory()">Back to Dashboard</button>
+            </div>
+        </div>
+
+        <!-- Learning View -->
+        <div id="learning" class="view hidden">
+            <div class="header">
+                <h1 class="title">AI Learning Modules</h1>
+                <p class="subtitle">Build your foundation in artificial intelligence concepts</p>
+                <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
+            </div>
+            
+            <div class="learning-nav">
+                <div class="topic-tabs" id="topicTabs"></div>
+            </div>
+            
+            <div class="learning-content" id="learningContent">
+                <div class="topic-card">
+                    <h2>Select a topic to start learning</h2>
+                    <p>Choose from the tabs above to explore different AI concepts.</p>
+                </div>
+            </div>
+            
+            <div class="learning-actions">
+                <button class="primary-btn" onclick="startNewSession()">Ready for Assessment →</button>
+            </div>
+        </div>
+
+        <!-- Quiz View -->
+        <div id="quiz" class="view hidden">
+            <div class="header">
+                <h1 class="title">AI Knowledge Assessment</h1>
+                <p class="subtitle">Session started: <span id="sessionTime"></span></p>
+                <div class="header-buttons">
+                    <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
+                    <button class="finish-btn" onclick="finishSession()" id="finishBtn">Finish Session</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="currentQ">1</div>
+                    <div class="stat-label">Question</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalQ">0</div>
+                    <div class="stat-label">Total Questions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="score">0%</div>
+                    <div class="stat-label">Progress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="correct">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="wrong">0</div>
+                    <div class="stat-label">Incorrect</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progress" style="width: 0%"></div>
+            </div>
+
+            <div id="quiz-container">
+                <div class="question-container">
+                    <div class="question-header">
+                        <div class="question-number" id="questionNum">1</div>
+                        <div class="question-text" id="question"></div>
+                    </div>
+                    <div class="answers-list" id="answers"></div>
+                    <button class="submit-btn" id="submit" onclick="submitAnswer()" disabled>
+                        Submit Answer
+                    </button>
+                </div>
+            </div>
+
+            <div id="final" class="final-results hidden">
+                <h2>Assessment Complete</h2>
+                <div class="performance-message" id="final-message"></div>
+                
+                <div class="score-summary">
+                    <div class="score-item">
+                        <div class="score-value total" id="final-score">0</div>
+                        <div class="score-label">Total Score</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value correct" id="final-correct">0</div>
+                        <div class="score-label">Correct</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value wrong" id="final-wrong">0</div>
+                        <div class="score-label">Incorrect</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="restart-btn" onclick="restart()">
+                        Take Assessment Again
+                    </button>
+                    <button class="review-btn" onclick="startReviewSession()" id="reviewBtn">
+                        Review Incorrect Questions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <!-- Module Scripts -->
+    <script src="questions.js"></script>
+    <script src="learning-content.js"></script>
+    <script src="utils.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
