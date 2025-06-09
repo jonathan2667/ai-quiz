@@ -581,7 +581,7 @@ const questions = [
       "It enhances an attribute by integrating a new term that depends on spreading degree.",
       "None of the above."
     ],
-    "correct": "b"
+    "correct": "ab"
   },
   {
     "question": "We can implement the infinite summation as a sum over a finite number of array elements:",
@@ -790,11 +790,11 @@ const TOTAL_QUESTIONS = questions.length;
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { questions, TOTAL_QUESTIONS };
+  module.exports = { questions, TOTAL_QUESTIONS };
 }
 
 // Make available globally for browser
 if (typeof window !== 'undefined') {
-    window.questions = questions;
-    window.TOTAL_QUESTIONS = TOTAL_QUESTIONS;
+  window.questions = questions;
+  window.TOTAL_QUESTIONS = TOTAL_QUESTIONS;
 } 
