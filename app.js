@@ -13,22 +13,22 @@ let currentQuestions = [];
 let isReviewMode = false;
 
 // Initialize application
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM Content Loaded - Initializing app...');
-    
+
     try {
         sessionManager = new SessionManager();
         notificationManager = new NotificationManager();
-        
+
         // Initialize learning content
         initializeLearning();
-        
+
         // Load session history
         loadSessionHistory();
-        
+
         // Update dashboard review card
         updateDashboardReviewCard();
-        
+
         notificationManager.info('Welcome to the AI Learning Platform!');
         console.log('App initialized successfully');
     } catch (error) {
@@ -47,7 +47,7 @@ function showDashboard() {
 function updateDashboardReviewCard() {
     const lastSession = sessionManager.getLastSession();
     const reviewCard = document.getElementById('reviewCard');
-    
+
     if (lastSession && lastSession.incorrectQuestions && lastSession.incorrectQuestions.length > 0) {
         reviewCard.style.display = 'block';
         reviewCard.style.opacity = '1';
@@ -76,16 +76,16 @@ function startNewSession() {
     incorrectQuestions = [];
     sessionStartTime = Date.now();
     isReviewMode = false;
-    
+
     // Load all questions
     currentQuestions = QuizUtils.shuffleArray([...window.questions]);
-    
+
     // Show quiz view
     DOMUtils.showView('quiz');
-    
+
     // Set session time
     DOMUtils.setText('sessionTime', new Date().toLocaleTimeString());
-    
+
     // Start quiz
     displayQuestion();
     updateStats();
@@ -94,12 +94,12 @@ function startNewSession() {
 
 function startReviewSession() {
     const lastSession = sessionManager.getLastSession();
-    
+
     if (!lastSession || !lastSession.incorrectQuestions || lastSession.incorrectQuestions.length === 0) {
         notificationManager.error('No incorrect questions to review from your last session.');
         return;
     }
-    
+
     // Reset quiz state
     currentQuestion = 0;
     correctAnswers = 0;
@@ -108,16 +108,16 @@ function startReviewSession() {
     incorrectQuestions = [];
     sessionStartTime = Date.now();
     isReviewMode = true;
-    
+
     // Load only incorrect questions from last session
     currentQuestions = [...lastSession.incorrectQuestions];
-    
+
     // Show quiz view
     DOMUtils.showView('quiz');
-    
+
     // Set session time
     DOMUtils.setText('sessionTime', new Date().toLocaleTimeString());
-    
+
     // Start quiz
     displayQuestion();
     updateStats();
@@ -147,10 +147,10 @@ function initializeLearning() {
         { key: 'optimization', title: 'Optimization & Training' },
         { key: 'deep-learning', title: 'Deep Learning & CNNs' }
     ];
-    
+
     const tabsContainer = document.getElementById('topicTabs');
     const contentContainer = document.getElementById('learningContent');
-    
+
     // Create topic tabs
     tabsContainer.innerHTML = '';
     topics.forEach((topic, index) => {
@@ -160,7 +160,7 @@ function initializeLearning() {
         tab.onclick = () => showTopicContent(topic.key, tab);
         tabsContainer.appendChild(tab);
     });
-    
+
     // Show first topic by default
     showTopicContent(topics[0].key);
 }
@@ -171,7 +171,7 @@ function showTopicContent(topicKey, clickedTab = null) {
         document.querySelectorAll('.topic-tab').forEach(tab => tab.classList.remove('active'));
         clickedTab.classList.add('active');
     }
-    
+
     // Get content based on topic
     const content = getTopicContentHTML(topicKey);
     DOMUtils.setHTML('learningContent', content);
@@ -565,7 +565,7 @@ function getTopicContentHTML(topicKey) {
             </div>
         `
     };
-    
+
     return topics[topicKey] || '<div class="topic-card"><h2>Topic not found</h2><p>Please select a valid topic.</p></div>';
 }
 
@@ -579,14 +579,30 @@ function displayQuestion() {
     const question = currentQuestions[currentQuestion];
     const questionContainer = document.getElementById('quiz-container');
     const finalContainer = document.getElementById('final');
-    
+
     questionContainer.classList.remove('hidden');
     finalContainer.classList.add('hidden');
 
     // Update question display
     DOMUtils.setText('questionNum', (currentQuestion + 1).toString());
     DOMUtils.setText('question', question.question);
-    
+
+    // Handle question image if present
+    if (question.image) {
+        const questionContainer = document.getElementById('question');
+        const existingImage = questionContainer.querySelector('img');
+        if (existingImage) {
+            existingImage.remove();
+        }
+
+        const img = document.createElement('img');
+        img.src = question.image;
+        img.alt = 'Question diagram';
+        img.style.maxWidth = '100%';
+        img.style.marginTop = '15px';
+        questionContainer.appendChild(img);
+    }
+
     // Update progress bar
     const progress = ((currentQuestion + 1) / currentQuestions.length) * 100;
     document.getElementById('progress').style.width = progress + '%';
@@ -594,13 +610,13 @@ function displayQuestion() {
     // Display answers with shuffling
     const answersContainer = document.getElementById('answers');
     answersContainer.innerHTML = '';
-    
+
     // Create answer objects with original indices for tracking correct answers
     const answerObjects = question.answers.map((answer, index) => ({
         text: answer,
         originalIndex: index
     }));
-    
+
     // Shuffle the answers only once per question
     if (!question.shuffledAnswers) {
         question.shuffledAnswers = QuizUtils.shuffleArray(answerObjects);
@@ -609,20 +625,20 @@ function displayQuestion() {
         console.log('Original correct:', question.correct);
         console.log('Shuffled mapping:', question.shuffledMapping);
     }
-    
+
     question.shuffledAnswers.forEach((answerObj, displayIndex) => {
         const answerDiv = document.createElement('div');
         answerDiv.className = 'answer-option';
         answerDiv.onclick = () => selectAnswer(displayIndex, answerDiv);
-        
+
         const label = document.createElement('div');
         label.className = 'answer-label';
         label.textContent = QuizUtils.getLetterFromIndex(displayIndex).toUpperCase();
-        
+
         const text = document.createElement('div');
         text.className = 'answer-text';
         text.textContent = answerObj.text;
-        
+
         answerDiv.appendChild(label);
         answerDiv.appendChild(text);
         answersContainer.appendChild(answerDiv);
@@ -632,13 +648,13 @@ function displayQuestion() {
     const submitBtn = document.getElementById('submit');
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submit Answer';
-    
+
     selectedAnswers = [];
 }
 
 function selectAnswer(index, answerElement) {
     const answerIndex = selectedAnswers.indexOf(index);
-    
+
     if (answerIndex > -1) {
         // Deselect answer
         selectedAnswers.splice(answerIndex, 1);
@@ -648,7 +664,7 @@ function selectAnswer(index, answerElement) {
         selectedAnswers.push(index);
         answerElement.classList.add('selected');
     }
-    
+
     // Enable submit button if any answer is selected
     const submitBtn = document.getElementById('submit');
     submitBtn.disabled = selectedAnswers.length === 0;
@@ -657,22 +673,22 @@ function selectAnswer(index, answerElement) {
 function submitAnswer() {
     const currentQ = currentQuestions[currentQuestion];
     const originalCorrectIndices = QuizUtils.parseCorrectAnswers(currentQ.correct);
-    
+
     // Map selected display indices back to original indices
-    const selectedOriginalIndices = selectedAnswers.map(displayIndex => 
+    const selectedOriginalIndices = selectedAnswers.map(displayIndex =>
         currentQ.shuffledMapping[displayIndex]
     );
-    
+
     console.log('Submit Answer Debug:');
     console.log('- Selected display indices:', selectedAnswers);
     console.log('- Shuffled mapping:', currentQ.shuffledMapping);
     console.log('- Selected original indices:', selectedOriginalIndices);
     console.log('- Original correct indices:', originalCorrectIndices);
-    
+
     // Check if answer is correct using original indices
-    const isCorrect = selectedOriginalIndices.length === originalCorrectIndices.length && 
-                     selectedOriginalIndices.every(index => originalCorrectIndices.includes(index));
-    
+    const isCorrect = selectedOriginalIndices.length === originalCorrectIndices.length &&
+        selectedOriginalIndices.every(index => originalCorrectIndices.includes(index));
+
     if (isCorrect) {
         correctAnswers++;
         notificationManager.success('Correct! Well done!');
@@ -682,7 +698,7 @@ function submitAnswer() {
         incorrectQuestions.push(currentQ);
         notificationManager.error('Incorrect. The correct answer(s) have been highlighted.');
     }
-    
+
     // Show correct/incorrect styling
     const answerOptions = document.querySelectorAll('.answer-option');
     console.log('Highlighting Debug:');
@@ -690,9 +706,9 @@ function submitAnswer() {
         const originalIndex = currentQ.shuffledMapping[displayIndex];
         const isCorrectAnswer = originalCorrectIndices.includes(originalIndex);
         const wasSelected = selectedAnswers.includes(displayIndex);
-        
+
         console.log(`- Display ${displayIndex} (${QuizUtils.getLetterFromIndex(displayIndex).toUpperCase()}): original=${originalIndex}, correct=${isCorrectAnswer}, selected=${wasSelected}`);
-        
+
         if (isCorrectAnswer) {
             option.classList.add('correct');
         } else if (wasSelected) {
@@ -700,19 +716,19 @@ function submitAnswer() {
         }
         option.onclick = null; // Disable clicking
     });
-    
+
     // Update submit button
     const submitBtn = document.getElementById('submit');
     submitBtn.textContent = currentQuestion < currentQuestions.length - 1 ? 'Next Question' : 'Finish Quiz';
     submitBtn.onclick = nextQuestion;
-    
+
     updateStats();
 }
 
 function nextQuestion() {
     currentQuestion++;
     displayQuestion();
-    
+
     // Reset submit button function
     const submitBtn = document.getElementById('submit');
     submitBtn.onclick = submitAnswer;
@@ -721,7 +737,7 @@ function nextQuestion() {
 function updateStats() {
     const questionsAnswered = correctAnswers + wrongAnswers;
     const completionPercentage = questionsAnswered > 0 ? Math.round((questionsAnswered / currentQuestions.length) * 100) : 0;
-    
+
     DOMUtils.setText('currentQ', `${currentQuestion + 1}/${currentQuestions.length}`);
     DOMUtils.setText('totalQ', currentQuestions.length.toString());
     DOMUtils.setText('score', `${completionPercentage}%`);
@@ -733,27 +749,27 @@ function endQuiz() {
     const sessionDuration = Math.floor((Date.now() - sessionStartTime) / 1000);
     const questionsAnswered = correctAnswers + wrongAnswers;
     const percentage = QuizUtils.calculatePercentage(correctAnswers, currentQuestions.length);
-    
+
     // Hide quiz container, show final results
     document.getElementById('quiz-container').classList.add('hidden');
     document.getElementById('final').classList.remove('hidden');
-    
+
     // Update final scores with completion info
-    const completionText = questionsAnswered < currentQuestions.length ? 
-        `${percentage}% (${questionsAnswered}/${currentQuestions.length} answered)` : 
+    const completionText = questionsAnswered < currentQuestions.length ?
+        `${percentage}% (${questionsAnswered}/${currentQuestions.length} answered)` :
         `${percentage}%`;
-    
+
     DOMUtils.setText('final-score', completionText);
     DOMUtils.setText('final-correct', correctAnswers.toString());
     DOMUtils.setText('final-wrong', wrongAnswers.toString());
-    
+
     // Adjust message for partial completion
     let message = QuizUtils.getPerformanceMessage(percentage);
     if (questionsAnswered < currentQuestions.length) {
         message = `Session completed early. ${message}`;
     }
     DOMUtils.setText('final-message', message);
-    
+
     // Save session
     sessionManager.saveSession({
         correctAnswers: correctAnswers,
@@ -767,11 +783,11 @@ function endQuiz() {
         incorrectQuestions: incorrectQuestions,
         isReviewMode: isReviewMode
     });
-    
-    const completionMessage = questionsAnswered < currentQuestions.length ? 
+
+    const completionMessage = questionsAnswered < currentQuestions.length ?
         `Session finished early! You scored ${percentage}% (${correctAnswers}/${currentQuestions.length} correct).` :
         `Assessment completed! You scored ${percentage}%`;
-    
+
     // Show/hide review button based on incorrect questions
     const reviewBtn = document.getElementById('reviewBtn');
     if (incorrectQuestions.length > 0 && !isReviewMode) {
@@ -780,7 +796,7 @@ function endQuiz() {
     } else {
         reviewBtn.style.display = 'none';
     }
-    
+
     notificationManager.success(completionMessage);
 }
 
@@ -793,7 +809,7 @@ function finishSession() {
         notificationManager.info('No questions answered yet. Please answer at least one question before finishing.');
         return;
     }
-    
+
     if (confirm('Are you sure you want to finish this session? Your current progress will be saved.')) {
         endQuiz();
     }
@@ -803,24 +819,24 @@ function finishSession() {
 function loadSessionHistory() {
     const sessions = sessionManager.getSessions();
     const historyList = document.getElementById('history-list');
-    
+
     if (sessions.length === 0) {
         historyList.innerHTML = '<p style="text-align: center; color: #64748b;">No assessment history yet. Take your first assessment to see results here!</p>';
         return;
     }
-    
+
     historyList.innerHTML = '';
-    
+
     // Show recent sessions first
     sessions.reverse().forEach((session, index) => {
         const historyItem = document.createElement('div');
         historyItem.className = 'history-item';
-        
+
         const formattedDate = QuizUtils.formatDate(session.timestamp);
         const duration = QuizUtils.formatTime(session.duration || 0);
         const questionsAnswered = session.questionsAnswered || (session.correctAnswers + session.wrongAnswers);
         const completionStatus = session.completed === false ? ' (Early finish)' : '';
-        
+
         historyItem.innerHTML = `
             <div class="history-info">
                 <h4>Assessment #${sessions.length - index}${completionStatus}</h4>
@@ -831,7 +847,7 @@ function loadSessionHistory() {
                 <div class="score-details">${session.correctAnswers}/${questionsAnswered} answered</div>
             </div>
         `;
-        
+
         historyList.appendChild(historyItem);
     });
 }

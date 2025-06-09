@@ -782,7 +782,180 @@ const questions = [
       "We make the representation dependent on small translations of the input."
     ],
     "correct": "a"
-  }
+  },
+
+
+  //////////////////////////////////////////////////////
+  // NEW QUESTIONS ADDED BY ME 
+  //////////////////////////////////////////////////////
+
+  // EXAM-MATERIALS SUBJECT
+
+  /*  {
+      "question": "What is a proper encoding for an individual in Genetic Programming?",
+      "answers": [
+        "a string of bits",
+        "depends on the problem",
+        "a computer program that solves the given problem",
+        "a binary expression"
+      ],
+      "correct": "c"
+    },
+    {
+      "question": "Which one(s) of the following problems can’t be solved by a perceptron?",
+      "answers": [
+        "AND logic",
+        "any problem that implies finding a function",
+        "XOR",
+        "OR logic"
+      ],
+      "correct": "c"
+    },
+    {
+      "question": "What are the main specific features of a particle in PSO optimisation?",
+      "answers": [
+        "Velocity and trace",
+        "Fitness function",
+        "Current position and velocity",
+        "There is no specific feature"
+      ],
+      "correct": "c"
+    },
+    {
+      "question": "Which one of the following representations is NOT proper for the N-Queen problem?",
+      "answers": [
+        "Binary",
+        "Vectors of N integers",
+        "Vectors of N real numbers",
+        "Permutation of N size"
+      ],
+      "correct": "a"
+    },
+    {
+      "question": "What is the fitness function for the N-Queen problem?",
+      "answers": [
+        "The number of queens placed on the same line",
+        "The number of queens placed on the same column",
+        "The number of queens that attack each other",
+        "The difference in absolute value between the number of queens that attack each other on line and the number of queens that attack each other on columns"
+      ],
+      "correct": "c"
+    },
+    {
+      "question": "On what is based the ant colony system?",
+      "answers": [
+        "On an evolutionary schema",
+        "The pheromone trace left by ants",
+        "Inertia and speed",
+        "Identical with PSO"
+      ],
+      "correct": "b"
+    },
+    {
+      "question": "How is propagated the error into an artificial neural network that uses back-propagation?",
+      "answers": [
+        "In the same direction as the input signal",
+        "You don’t compute the error for this algorithm",
+        "In both directions",
+        "It propagates backwards through the network"
+      ],
+      "correct": "d"
+    },
+    {
+      "question": "Using an ANN to decide if a 15×10-pixel black-and-white image contains a circle (structure 150:15:20:2, sigmoid activation), what type of problem is this?",
+      "answers": [
+        "Regression",
+        "Clustering",
+        "Classification",
+        "Dimensionality reduction"
+      ],
+      "correct": "c"
+    },
+    {
+      "question": "In the same ANN (150:15:20:2), how many weights does each neuron in the last layer have (not counting its bias)?",
+      "answers": [
+        "15",
+        "20",
+        "2",
+        "150"
+      ],
+      "correct": "b"
+    },
+    {
+      "question": "On what does the adjustment value of the weights depend when training with back-propagation?",
+      "answers": [
+        "The learning rate and the gradient of the error",
+        "The total number of training epochs",
+        "The random seed used to initialize weights",
+        "The number of hidden layers"
+      ],
+      "correct": "a"
+    },
+    {
+      "question": "Specify the correct statement(s) in a ruled based system in certain environments inference engine with forward-chaining:",
+      "answers": [
+        "The inference engine can draw new conclusions",
+        "Facts are represented in a working memory which is continually updated",
+        "The actions usually involve adding or deleting items from working memory",
+        "Rules are written as left-hand side (LHS) ⇒ right-hand side (RHS)"
+      ],
+      "correct": "bc"
+    },
+    {
+      "question": "For a Genetic Programming algorithm identify the correct statement(s):",
+      "answers": [
+        "Convergence (complete, optimal) through global optima is slow",
+        "Easy to implement",
+        "The solution’s quality depends on the precision of variables involved in the algorithm",
+        "The main disadvantage is that it does depend on parameters"
+      ],
+      "correct": "cd"
+    },
+    {
+      "question": "Which of the following selection methods are commonly used in evolutionary algorithms? (choose all that apply)",
+      "answers": [
+        "Roulette‐wheel selection",
+        "Tournament selection",
+        "Rank‐based selection",
+        "Elitism (truncation) selection",
+        "Random selection",
+        "Gradient‐descent selection"
+      ],
+      "correct": "abcd"
+    },
+    {
+      "question": "In applying a genetic algorithm to select a subset of integer‐engraved balls whose sum is as close as possible to S, which design choices are appropriate? (choose all that apply)",
+      "answers": [
+        "Binary string representation (1 = include, 0 = exclude)",
+        "One‐point crossover and bit‐flip mutation operators",
+        "Fitness = –|(sum of selected balls) – S| (maximize)",
+        "Tournament selection",
+        "Gradient‐descent operator"
+      ],
+      "correct": "abcd"
+    },*/
+  {
+    "question": "Fuzzify the raw input data for a person of 45 years old (see diagram). What are the membership values (μ) for each fuzzy set?",
+    "image": "imageQ1.png",
+    "answers": [
+      "μ_young = 0.0, μ_adult = 1.0, μ_middle‐age = 0.4, μ_old = 0.0",
+      "μ_young = 0.0, μ_adult = 0.8, μ_middle‐age = 0.2, μ_old = 0.0",
+      "μ_young = 0.0, μ_adult = 0.7, μ_middle‐age = 0.3, μ_old = 0.0",
+      "μ_young = 0.0, μ_adult = 1.0, μ_middle‐age = 0.3, μ_old = 0.0"
+    ],
+    "correct": "a"
+  }/*,
+  {
+    "question": "Which element(s) determine the probability for a new possible element to be added to the solution in an ant colony system? (choose all that apply)",
+    "answers": [
+      "Pheromone matrix values (τ)",
+      "Visibility of nodes (η)",
+      "Coefficient of pheromone importance (α)",
+      "Coefficient of visibility importance (β)",
+      "Genetic crossover operator"
+    ],
+    "correct": "abcd"
+  }*/
 ];
 
 // Total questions for reference
