@@ -107,20 +107,11 @@ class UserCounter {
         
         // Set up automatic removal when user disconnects
         userRef.onDisconnect().remove();
-        userRef.onDisconnect().then(() => {
-            // Log user disconnect
-            console.log('🚪 USER DISCONNECTED:', {
-                userId: this.userId,
-                ip: this.userInfo.ip,
-                location: `${this.userInfo.city}, ${this.userInfo.country}`,
-                timestamp: new Date().toISOString()
-            });
-            
-            // Update log with leave time
-            database.ref(`userLogs/${this.userId}`).update({
-                leaveTime: firebase.database.ServerValue.TIMESTAMP,
-                status: 'left'
-            });
+        
+        // Set up disconnect logging
+        database.ref(`userLogs/${this.userId}`).onDisconnect().update({
+            leaveTime: firebase.database.ServerValue.TIMESTAMP,
+            status: 'left'
         });
     }
 
@@ -174,10 +165,34 @@ class UserCounter {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 this.isActive = false;
+                
+                // Log user going inactive
+                console.log('💤 USER WENT INACTIVE:', {
+                    userId: this.userId,
+                    ip: this.userInfo.ip,
+                    location: `${this.userInfo.city}, ${this.userInfo.country}`,
+                    timestamp: new Date().toISOString()
+                });
+                
                 // Remove user when tab becomes hidden
                 database.ref(`activeUsers/${this.userId}`).remove();
+                
+                // Update log
+                database.ref(`userLogs/${this.userId}`).update({
+                    leaveTime: firebase.database.ServerValue.TIMESTAMP,
+                    status: 'inactive'
+                });
             } else {
                 this.isActive = true;
+                
+                // Log user becoming active again
+                console.log('⚡ USER BECAME ACTIVE:', {
+                    userId: this.userId,
+                    ip: this.userInfo.ip,
+                    location: `${this.userInfo.city}, ${this.userInfo.country}`,
+                    timestamp: new Date().toISOString()
+                });
+                
                 // Re-add user when tab becomes visible
                 this.addUser();
             }
@@ -186,8 +201,22 @@ class UserCounter {
 
     handlePageUnload() {
         window.addEventListener('beforeunload', () => {
+            // Log user disconnect
+            console.log('🚪 USER DISCONNECTED:', {
+                userId: this.userId,
+                ip: this.userInfo.ip,
+                location: `${this.userInfo.city}, ${this.userInfo.country}`,
+                timestamp: new Date().toISOString()
+            });
+            
             // Remove user when page is about to unload
             database.ref(`activeUsers/${this.userId}`).remove();
+            
+            // Update log with leave time
+            database.ref(`userLogs/${this.userId}`).update({
+                leaveTime: firebase.database.ServerValue.TIMESTAMP,
+                status: 'left'
+            });
         });
     }
 
