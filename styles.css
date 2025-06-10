@@ -1257,6 +1257,51 @@ body {
     font-size: 0.8rem;
 }
 
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.875rem;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: #f8fafc;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.875rem;
+}
+
+.btn-secondary:hover {
+    background: #f1f5f9;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
+}
+
 .btn-danger {
     background: #dc2626;
     color: white;

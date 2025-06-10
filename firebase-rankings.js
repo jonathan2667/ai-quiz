@@ -102,10 +102,15 @@ function displayRankings(rankings, sortBy = 'overallScore') {
     const rankingsContainer = document.getElementById('globalRankings');
     if (!rankingsContainer) return;
     
-    // Group by user and get their best score
+    // Filter to only include users who completed ALL questions
+    const completedTestsOnly = rankings.filter(entry => {
+        return entry.questionsAnswered === entry.totalQuestions && entry.totalQuestions > 0;
+    });
+    
+    // Group by user and get their best score (from completed tests only)
     const userBestScores = new Map();
     
-    rankings.forEach(entry => {
+    completedTestsOnly.forEach(entry => {
         const existing = userBestScores.get(entry.userName);
         if (!existing || entry[sortBy] > existing[sortBy]) {
             userBestScores.set(entry.userName, entry);
@@ -135,7 +140,7 @@ function displayRankings(rankings, sortBy = 'overallScore') {
     if (sortedRankings.length === 0) {
         rankingsHTML += `
             <div class="no-rankings">
-                <p>🎯 No rankings yet. Be the first to complete an assessment!</p>
+                <p>🎯 No complete assessments yet. Be the first to finish all ${rankings.length > 0 ? rankings[0].totalQuestions || 129 : 129} questions!</p>
             </div>
         `;
     } else {
