@@ -11,6 +11,10 @@
         <!-- Dashboard View -->
         <div id="dashboard" class="view">
             <div class="header">
+                <div class="live-users">
+                    <span class="users-count" id="userCount">• 0</span>
+                    <span class="users-label">users practicing</span>
+                </div>
                 <h1 class="title">AI Learning Platform</h1>
                 <p class="subtitle">Master artificial intelligence concepts through structured learning and assessment</p>
             </div>
@@ -164,6 +168,13 @@
     <footer class="footer">
         <p>Made by Jonathan Mogovan</p>
     </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    
+    <!-- User Counter Script -->
+    <script src="user-counter.js"></script>
 
     <!-- Module Scripts -->
     <script src="questions.js"></script>

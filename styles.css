@@ -23,6 +23,32 @@ body {
     margin-bottom: 40px;
     padding-bottom: 20px;
     border-bottom: 2px solid #e2e8f0;
+    position: relative;
+}
+
+/* Live Users Counter */
+.live-users {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.users-count {
+    color: #16a34a;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.users-label {
+    color: #64748b;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .title {
@@ -737,6 +763,12 @@ body {
     .review-btn, .restart-btn {
         min-width: auto;
         width: 100%;
+    }
+
+    .live-users {
+        position: static;
+        justify-content: center;
+        margin-bottom: 16px;
     }
 }
 
