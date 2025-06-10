@@ -691,7 +691,7 @@ const questions = [
       "Alignment with the desired data.",
       "Computational complexity of the target objective."
     ],
-    "correct": "c"
+    "correct": "b"
   },
   {
     "question": "Choose the right compatibility between the output layer's activation function and error function:",
