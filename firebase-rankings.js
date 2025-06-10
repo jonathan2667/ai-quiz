@@ -192,8 +192,16 @@ function updateRankingsFilter(filterType) {
 function showUserSettings() {
     const currentName = localStorage.getItem('aiQuizUserName');
     
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = `
+    // Show dashboard view first
+    DOMUtils.showView('dashboard');
+    
+    const dashboard = document.getElementById('dashboard');
+    if (!dashboard) {
+        console.error('dashboard element not found');
+        return;
+    }
+    
+    dashboard.innerHTML = `
         <div class="quiz-container">
             <div class="user-settings-dialog">
                 <h2>⚙️ User Settings</h2>
@@ -275,8 +283,6 @@ window.updateRankingsFilter = updateRankingsFilter;
 window.showUserSettings = showUserSettings;
 window.updateUserName = updateUserName;
 window.clearUserData = clearUserData;
-window.saveUserNameAndStart = saveUserNameAndStart;
-window.validateNameInput = validateNameInput;
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {

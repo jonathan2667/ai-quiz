@@ -123,9 +123,86 @@ function showDashboard() {
     // Stop timer if running
     stopTimer();
     
+    // Restore dashboard content if it was replaced
+    restoreDashboard();
+    
     DOMUtils.showView('dashboard');
     loadSessionHistory();
     updateDashboardReviewCard();
+}
+
+function restoreDashboard() {
+    const dashboard = document.getElementById('dashboard');
+    if (!dashboard) return;
+    
+    // Check if dashboard has been replaced (no dashboard-grid element)
+    if (!dashboard.querySelector('.dashboard-grid')) {
+        dashboard.innerHTML = `
+            <div class="header">
+                <div class="live-users">
+                    <span class="users-count" id="userCount">• 0</span>
+                    <span class="users-label">users practicing</span>
+                </div>
+                <h1 class="title">AI Learning Platform</h1>
+                <p class="subtitle">Master artificial intelligence concepts through structured learning and assessment</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card primary" onclick="showLearning()">
+                    <div class="card-icon">📚</div>
+                    <h3>Learning Modules</h3>
+                    <p>Study AI concepts with guided explanations</p>
+                    <button class="card-btn">Start Learning</button>
+                </div>
+                
+                <div class="dashboard-card secondary" onclick="startNewSession()">
+                    <div class="card-icon">🎯</div>
+                    <h3>New Assessment</h3>
+                    <p>Test your knowledge with comprehensive questions</p>
+                    <button class="card-btn">Take Test</button>
+                </div>
+                
+                <div class="dashboard-card quaternary" onclick="startReviewSession()" id="reviewCard">
+                    <div class="card-icon">🔄</div>
+                    <h3>Review Missed Questions</h3>
+                    <p>Practice questions you got wrong in your last session</p>
+                    <button class="card-btn">Start Review</button>
+                </div>
+                
+                <div class="dashboard-card tertiary" onclick="showHistory()">
+                    <div class="card-icon">📊</div>
+                    <h3>Session History</h3>
+                    <p>Review your progress and past performance</p>
+                    <button class="card-btn">View History</button>
+                </div>
+                
+                <div class="dashboard-card rankings">
+                    <div class="card-icon">🏆</div>
+                    <h3>Global Rankings</h3>
+                    <p>See how you rank against other learners worldwide</p>
+                    <button onclick="showUserSettings()" class="card-btn secondary">Settings</button>
+                </div>
+            </div>
+
+            <!-- Global Rankings Section -->
+            <div id="globalRankings" class="global-rankings-section">
+                <!-- Rankings will be loaded here by JavaScript -->
+            </div>
+            
+            <div id="history-section" class="history-section hidden">
+                <h2>Assessment History</h2>
+                <div id="history-list" class="history-list"></div>
+                <button class="back-btn" onclick="hideHistory()">Back to Dashboard</button>
+            </div>
+        `;
+        
+        // Need to reload rankings after restoring dashboard
+        setTimeout(() => {
+            if (window.loadGlobalRankings) {
+                loadGlobalRankings();
+            }
+        }, 100);
+    }
 }
 
 function updateDashboardReviewCard() {
@@ -164,8 +241,11 @@ function startNewSession() {
 }
 
 function showUserNameDialog() {
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = `
+    // Show dashboard view first
+    DOMUtils.showView('dashboard');
+    
+    const dashboard = document.getElementById('dashboard');
+    dashboard.innerHTML = `
         <div class="quiz-container">
             <div class="user-name-dialog">
                 <h2>🏆 Join the Global Rankings!</h2>
@@ -1137,6 +1217,8 @@ window.hideHistory = hideHistory;
 window.submitAnswer = submitAnswer;
 window.restart = restart;
 window.finishSession = finishSession;
+window.saveUserNameAndStart = saveUserNameAndStart;
+window.validateNameInput = validateNameInput;
 
 // Debug: Test that functions are available
 console.log('Functions exported to window:', {
