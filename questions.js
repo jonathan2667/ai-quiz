@@ -241,7 +241,7 @@ const questions = [
       "is the inner product of the input vector with the weight vector",
       "it can be the sigmoid function"
     ],
-    "correct": "a"
+    "correct": "ac"
   },
   {
     "question": "The indirect experience when choosing the training database is:",
