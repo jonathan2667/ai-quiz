@@ -11,6 +11,40 @@ let notificationManager = null;
 let incorrectQuestions = [];
 let currentQuestions = [];
 let isReviewMode = false;
+let timerInterval = null;
+
+// Timer Functions
+function startTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    
+    timerInterval = setInterval(() => {
+        const elapsedTime = Math.floor((Date.now() - sessionStartTime) / 1000);
+        updateTimerDisplay(elapsedTime);
+    }, 1000);
+    
+    // Update immediately
+    updateTimerDisplay(0);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+function updateTimerDisplay(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const timeString = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    
+    const timerElement = document.getElementById('elapsedTimer');
+    if (timerElement) {
+        timerElement.textContent = timeString;
+    }
+}
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', function () {
@@ -39,6 +73,10 @@ document.addEventListener('DOMContentLoaded', function () {
 // Navigation Functions
 function showDashboard() {
     console.log('showDashboard called');
+    
+    // Stop timer if running
+    stopTimer();
+    
     DOMUtils.showView('dashboard');
     loadSessionHistory();
     updateDashboardReviewCard();
@@ -86,6 +124,9 @@ function startNewSession() {
     // Set session time
     DOMUtils.setText('sessionTime', new Date().toLocaleTimeString());
 
+    // Start timer
+    startTimer();
+
     // Start quiz
     displayQuestion();
     updateStats();
@@ -117,6 +158,9 @@ function startReviewSession() {
 
     // Set session time
     DOMUtils.setText('sessionTime', new Date().toLocaleTimeString());
+
+    // Start timer
+    startTimer();
 
     // Start quiz
     displayQuestion();
@@ -746,6 +790,9 @@ function updateStats() {
 }
 
 function endQuiz() {
+    // Stop the timer
+    stopTimer();
+    
     const sessionDuration = Math.floor((Date.now() - sessionStartTime) / 1000);
     const questionsAnswered = correctAnswers + wrongAnswers;
     const percentage = QuizUtils.calculatePercentage(correctAnswers, currentQuestions.length);

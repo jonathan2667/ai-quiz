@@ -84,7 +84,13 @@
         <div id="quiz" class="view hidden">
             <div class="header">
                 <h1 class="title">AI Knowledge Assessment</h1>
-                <p class="subtitle">Session started: <span id="sessionTime"></span></p>
+                <div class="session-info">
+                    <p class="subtitle">Session started: <span id="sessionTime"></span></p>
+                    <div class="timer-display">
+                        <span class="timer-icon">⏱️</span>
+                        <span class="timer-text" id="elapsedTimer">00:00</span>
+                    </div>
+                </div>
                 <div class="header-buttons">
                     <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
                     <button class="finish-btn" onclick="finishSession()" id="finishBtn">Finish Session</button>

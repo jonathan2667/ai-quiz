@@ -64,6 +64,37 @@ body {
     font-weight: 400;
 }
 
+/* Session Info and Timer */
+.session-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.timer-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+}
+
+.timer-icon {
+    font-size: 1rem;
+}
+
+.timer-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3730a3;
+    min-width: 50px;
+    text-align: center;
+}
+
 /* View Management */
 .view {
     display: block;
@@ -769,6 +800,16 @@ body {
         position: static;
         justify-content: center;
         margin-bottom: 16px;
+    }
+
+    .session-info {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .timer-display {
+        align-self: center;
     }
 }
 
