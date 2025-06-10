@@ -1105,7 +1105,7 @@ const questions = [
       "μ_red(10) = 2 and μ_green(10) = 0.5",
       "μ_red(10) = 0 and μ_green(10) = 0"
     ],
-    "correct": "a"
+    "correct": "d"
   },
   {
     "question": "In a feed forward Artificial Neural Network there are connections between nodes from the same layer.",
