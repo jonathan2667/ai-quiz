@@ -47,6 +47,18 @@
                     <p>Review your progress and past performance</p>
                     <button class="card-btn">View History</button>
                 </div>
+                
+                <div class="dashboard-card rankings">
+                    <div class="card-icon">🏆</div>
+                    <h3>Global Rankings</h3>
+                    <p>See how you rank against other learners worldwide</p>
+                    <button onclick="showUserSettings()" class="card-btn secondary">Settings</button>
+                </div>
+            </div>
+
+            <!-- Global Rankings Section -->
+            <div id="globalRankings" class="global-rankings-section">
+                <!-- Rankings will be loaded here by JavaScript -->
             </div>
             
             <div id="history-section" class="history-section hidden">
@@ -172,7 +184,22 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Made by Jonathan Mogovan</p>
+        <div class="footer-content">
+            <p>Made by Jonathan Mogovan</p>
+            <div class="contributors">
+                <h4>Contributors</h4>
+                <div class="contributor-list">
+                    <div class="contributor">
+                        <span class="contributor-name">Jonathan Mogovan</span>
+                        <span class="contributor-handle">@jonathan2667</span>
+                    </div>
+                    <div class="contributor">
+                        <span class="contributor-name">Teo</span>
+                        <span class="contributor-handle">@Oancea-Teodora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Firebase SDK -->
@@ -189,6 +216,7 @@
     <script src="questions.js"></script>
     <script src="learning-content.js"></script>
     <script src="utils.js"></script>
+    <script src="firebase-rankings.js"></script>
     <script src="app.js"></script>
 </body>
 </html> 
