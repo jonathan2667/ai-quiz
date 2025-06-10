@@ -1,13 +1,13 @@
 // Firebase configuration
 const firebaseConfig = {
-    // Replace with your Firebase project config
-    apiKey: "your-api-key",
-    authDomain: "your-project.firebaseapp.com",
-    databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-    projectId: "your-project",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "your-app-id"
+    apiKey: "AIzaSyDT41GbcZPK3YbhPy4aIKtkrCumslWTV5A",
+    authDomain: "ai-quiz-ubb.firebaseapp.com",
+    databaseURL: "https://ai-quiz-ubb-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "ai-quiz-ubb",
+    storageBucket: "ai-quiz-ubb.firebasestorage.app",
+    messagingSenderId: "831163681456",
+    appId: "1:831163681456:web:1696bbbf75b40b31710975",
+    measurementId: "G-EHX7QDRT8T"
 };
 
 // Initialize Firebase
@@ -20,6 +20,7 @@ class UserCounter {
         this.isActive = true;
         this.heartbeatInterval = null;
         this.counterElement = document.getElementById('userCount');
+        this.userInfo = {};
         
         this.init();
     }
@@ -28,7 +29,51 @@ class UserCounter {
         return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
-    init() {
+    async getUserInfo() {
+        try {
+            // Get IP address and location info
+            const response = await fetch('https://ipapi.co/json/');
+            const data = await response.json();
+            
+            this.userInfo = {
+                ip: data.ip || 'Unknown',
+                country: data.country_name || 'Unknown',
+                city: data.city || 'Unknown',
+                region: data.region || 'Unknown',
+                timezone: data.timezone || 'Unknown',
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                screen: `${screen.width}x${screen.height}`,
+                timestamp: new Date().toISOString()
+            };
+
+            // Log user info to console (server-side logging simulation)
+            console.log('🔥 NEW USER CONNECTED:', {
+                userId: this.userId,
+                ip: this.userInfo.ip,
+                location: `${this.userInfo.city}, ${this.userInfo.country}`,
+                userAgent: this.userInfo.userAgent.substring(0, 100) + '...',
+                timestamp: this.userInfo.timestamp
+            });
+
+        } catch (error) {
+            console.log('Could not fetch IP info:', error);
+            this.userInfo = {
+                ip: 'Unknown',
+                country: 'Unknown',
+                city: 'Unknown',
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                screen: `${screen.width}x${screen.height}`,
+                timestamp: new Date().toISOString()
+            };
+        }
+    }
+
+    async init() {
+        // Get user info including IP address
+        await this.getUserInfo();
+        
         // Add user to active users
         this.addUser();
         
@@ -49,11 +94,34 @@ class UserCounter {
         const userRef = database.ref(`activeUsers/${this.userId}`);
         userRef.set({
             timestamp: firebase.database.ServerValue.TIMESTAMP,
-            lastSeen: firebase.database.ServerValue.TIMESTAMP
+            lastSeen: firebase.database.ServerValue.TIMESTAMP,
+            userInfo: this.userInfo
+        });
+        
+        // Also log to Firebase for admin viewing
+        database.ref(`userLogs/${this.userId}`).set({
+            ...this.userInfo,
+            joinTime: firebase.database.ServerValue.TIMESTAMP,
+            status: 'joined'
         });
         
         // Set up automatic removal when user disconnects
         userRef.onDisconnect().remove();
+        userRef.onDisconnect().then(() => {
+            // Log user disconnect
+            console.log('🚪 USER DISCONNECTED:', {
+                userId: this.userId,
+                ip: this.userInfo.ip,
+                location: `${this.userInfo.city}, ${this.userInfo.country}`,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Update log with leave time
+            database.ref(`userLogs/${this.userId}`).update({
+                leaveTime: firebase.database.ServerValue.TIMESTAMP,
+                status: 'left'
+            });
+        });
     }
 
     listenForUserCount() {
@@ -63,6 +131,18 @@ class UserCounter {
             const users = snapshot.val();
             const userCount = users ? Object.keys(users).length : 0;
             this.updateCounterDisplay(userCount);
+            
+            // Log current active users to console
+            if (users) {
+                console.log(`👥 ACTIVE USERS (${userCount}):`);
+                Object.keys(users).forEach(userId => {
+                    const user = users[userId];
+                    if (user.userInfo) {
+                        console.log(`  • ${user.userInfo.ip} - ${user.userInfo.city}, ${user.userInfo.country}`);
+                    }
+                });
+                console.log('─'.repeat(50));
+            }
         });
     }
 
@@ -145,4 +225,22 @@ setInterval(() => {
             });
         }
     });
-}, 60000); // Run every minute 
+}, 60000); // Run every minute
+
+// Clean up old user logs (older than 24 hours)
+setInterval(() => {
+    const cutoffTime = Date.now() - (24 * 60 * 60 * 1000); // 24 hours ago
+    const userLogsRef = database.ref('userLogs');
+    
+    userLogsRef.once('value', (snapshot) => {
+        const logs = snapshot.val();
+        if (logs) {
+            Object.keys(logs).forEach(userId => {
+                const log = logs[userId];
+                if (log.joinTime < cutoffTime) {
+                    database.ref(`userLogs/${userId}`).remove();
+                }
+            });
+        }
+    });
+}, 60 * 60 * 1000); // Run every hour 
