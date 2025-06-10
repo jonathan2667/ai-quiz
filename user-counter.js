@@ -1,7 +1,42 @@
 // Firebase configuration is loaded from config.js
-// Initialize Firebase
-firebase.initializeApp(window.firebaseConfig);
-const database = firebase.database();
+// Initialize Firebase with error handling
+let database;
+
+// Fallback configuration for development (remove in production)
+const fallbackConfig = {
+    apiKey: "AIzaSyDT41GbcZPK3YbhPy4aIKtkrCumslWTV5A",
+    authDomain: "ai-quiz-ubb.firebaseapp.com",
+    databaseURL: "https://ai-quiz-ubb-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "ai-quiz-ubb",
+    storageBucket: "ai-quiz-ubb.firebasestorage.app",
+    messagingSenderId: "831163681456",
+    appId: "1:831163681456:web:1696bbbf75b40b31710975",
+    measurementId: "G-EHX7QDRT8T"
+};
+
+function initializeFirebaseConnection() {
+    try {
+        let configToUse = window.firebaseConfig || fallbackConfig;
+        
+        if (!configToUse) {
+            throw new Error('No Firebase configuration available');
+        }
+        
+        firebase.initializeApp(configToUse);
+        database = firebase.database();
+        
+        if (window.firebaseConfig) {
+            console.log('✅ Firebase initialized with external config');
+        } else {
+            console.log('⚠️ Firebase initialized with fallback config (development mode)');
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Firebase initialization failed:', error);
+        return false;
+    }
+}
 
 class UserCounter {
     constructor() {
@@ -221,9 +256,14 @@ class UserCounter {
 
 // Initialize user counter when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    // Add a small delay to ensure Firebase is loaded
+    // Add a small delay to ensure all scripts are loaded
     setTimeout(() => {
-        window.userCounter = new UserCounter();
+        if (initializeFirebaseConnection()) {
+            window.userCounter = new UserCounter();
+        } else {
+            console.error('❌ Cannot start user counter: Firebase initialization failed');
+            console.log('📋 Make sure config.js exists and contains valid Firebase configuration');
+        }
     }, 1000);
 });
 
