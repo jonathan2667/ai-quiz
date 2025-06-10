@@ -736,11 +736,11 @@ function nextQuestion() {
 
 function updateStats() {
     const questionsAnswered = correctAnswers + wrongAnswers;
-    const completionPercentage = questionsAnswered > 0 ? Math.round((questionsAnswered / currentQuestions.length) * 100) : 0;
+    const accuracyPercentage = questionsAnswered > 0 ? Math.round((correctAnswers / questionsAnswered) * 100) : 0;
 
     DOMUtils.setText('currentQ', `${currentQuestion + 1}/${currentQuestions.length}`);
     DOMUtils.setText('totalQ', currentQuestions.length.toString());
-    DOMUtils.setText('score', `${completionPercentage}%`);
+    DOMUtils.setText('score', `${accuracyPercentage}%`);
     DOMUtils.setText('correct', correctAnswers.toString());
     DOMUtils.setText('wrong', wrongAnswers.toString());
 }
