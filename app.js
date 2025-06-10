@@ -11,6 +11,141 @@ let notificationManager = null;
 let incorrectQuestions = [];
 let currentQuestions = [];
 let isReviewMode = false;
+let timerInterval = null;
+
+// IP-based access control
+let userIP = 'Unknown';
+const ADMIN_IP = '188.24.53.198'; // Only this IP can see settings
+
+// Initialize IP detection
+async function detectUserIP() {
+    try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        userIP = data.ip || 'Unknown';
+        console.log('🌐 User IP detected:', userIP);
+        
+        // Hide/show settings based on IP
+        updateUIBasedOnPermissions();
+    } catch (error) {
+        console.log('Could not detect IP:', error);
+        userIP = 'Unknown';
+        updateUIBasedOnPermissions();
+    }
+}
+
+// Update UI based on user permissions
+function updateUIBasedOnPermissions() {
+    const isAdmin = userIP === ADMIN_IP;
+    console.log('👮 Admin access:', isAdmin ? 'GRANTED' : 'DENIED');
+    
+    // Make userIP available globally for other modules
+    window.userIP = userIP;
+    
+    // Find settings button and hide/show based on IP
+    const settingsButton = document.querySelector('button[onclick="showUserSettings()"]');
+    if (settingsButton) {
+        if (isAdmin) {
+            settingsButton.style.display = 'inline-block';
+            settingsButton.style.visibility = 'visible';
+        } else {
+            settingsButton.style.display = 'none';
+            settingsButton.style.visibility = 'hidden';
+        }
+    }
+    
+    // Update rankings card description based on permissions
+    const rankingsCard = document.querySelector('.dashboard-card.rankings');
+    if (rankingsCard) {
+        const cardText = rankingsCard.querySelector('p');
+        if (cardText) {
+            if (isAdmin) {
+                cardText.textContent = 'See how you rank against other learners worldwide';
+            } else {
+                cardText.textContent = 'See how you rank against other learners worldwide';
+            }
+        }
+    }
+}
+
+// Timer Functions
+function startTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    
+    timerInterval = setInterval(() => {
+        const elapsedTime = Math.floor((Date.now() - sessionStartTime) / 1000);
+        updateTimerDisplay(elapsedTime);
+    }, 1000);
+    
+    // Update immediately
+    updateTimerDisplay(0);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+function updateTimerDisplay(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const timeString = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    
+    const timerElement = document.getElementById('elapsedTimer');
+    if (timerElement) {
+        timerElement.textContent = timeString;
+    }
+}
+
+function calculateOverallScore(accuracy, totalTimeSeconds, questionsAnswered) {
+    // Constants for the scoring algorithm
+    const BASELINE_TIME_PER_QUESTION = 45; // 45 seconds per question baseline
+    const ACCURACY_WEIGHT = 0.7; // 70% weight for accuracy
+    const SPEED_WEIGHT = 0.3; // 30% weight for speed
+    
+    // Calculate time per question
+    const timePerQuestion = totalTimeSeconds / questionsAnswered;
+    
+    // Calculate speed score (higher is better)
+    // If you answer faster than baseline, you get bonus points
+    // If you answer slower, you get penalty
+    let speedFactor = BASELINE_TIME_PER_QUESTION / timePerQuestion;
+    
+    // Cap the speed factor to prevent extreme scores
+    speedFactor = Math.min(speedFactor, 2.0); // Maximum 2x bonus for speed
+    speedFactor = Math.max(speedFactor, 0.2); // Minimum 0.2x for very slow answers
+    
+    // Calculate speed score (0-100 scale)
+    const speedScore = speedFactor * 100;
+    
+    // Calculate weighted overall score
+    const overallScore = (accuracy * ACCURACY_WEIGHT) + (speedScore * SPEED_WEIGHT);
+    
+    // Cap at 100 and ensure minimum of 0
+    return Math.min(Math.max(Math.round(overallScore), 0), 100);
+}
+
+function getPerformanceGrade(overallScore) {
+    if (overallScore >= 90) return { grade: 'A+', color: '#16a34a', message: 'Outstanding Performance!' };
+    if (overallScore >= 80) return { grade: 'A', color: '#16a34a', message: 'Excellent Work!' };
+    if (overallScore >= 70) return { grade: 'B+', color: '#059669', message: 'Great Performance!' };
+    if (overallScore >= 60) return { grade: 'B', color: '#0891b2', message: 'Good Work!' };
+    if (overallScore >= 50) return { grade: 'C', color: '#ea580c', message: 'Fair Performance' };
+    return { grade: 'D', color: '#dc2626', message: 'Needs Improvement' };
+}
+
+function getSpeedRating(timePerQuestion) {
+    if (timePerQuestion <= 20) return { rating: 'Lightning Fast', icon: '⚡', color: '#16a34a' };
+    if (timePerQuestion <= 30) return { rating: 'Very Fast', icon: '🚀', color: '#16a34a' };
+    if (timePerQuestion <= 45) return { rating: 'Good Pace', icon: '✅', color: '#059669' };
+    if (timePerQuestion <= 60) return { rating: 'Steady', icon: '🎯', color: '#0891b2' };
+    if (timePerQuestion <= 90) return { rating: 'Thoughtful', icon: '🤔', color: '#ea580c' };
+    return { rating: 'Deliberate', icon: '🐌', color: '#dc2626' };
+}
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', function () {
@@ -39,9 +174,90 @@ document.addEventListener('DOMContentLoaded', function () {
 // Navigation Functions
 function showDashboard() {
     console.log('showDashboard called');
+    
+    // Stop timer if running
+    stopTimer();
+    
+    // Restore dashboard content if it was replaced
+    restoreDashboard();
+    
     DOMUtils.showView('dashboard');
     loadSessionHistory();
     updateDashboardReviewCard();
+}
+
+function restoreDashboard() {
+    const dashboard = document.getElementById('dashboard');
+    if (!dashboard) return;
+    
+    // Check if dashboard has been replaced (no dashboard-grid element)
+    if (!dashboard.querySelector('.dashboard-grid')) {
+        dashboard.innerHTML = `
+            <div class="header">
+                <div class="live-users">
+                    <span class="users-count" id="userCount">• 0</span>
+                    <span class="users-label">users practicing</span>
+                </div>
+                <h1 class="title">AI Learning Platform</h1>
+                <p class="subtitle">Master artificial intelligence concepts through structured learning and assessment</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card primary" onclick="showLearning()">
+                    <div class="card-icon">📚</div>
+                    <h3>Learning Modules</h3>
+                    <p>Study AI concepts with guided explanations</p>
+                    <button class="card-btn">Start Learning</button>
+                </div>
+                
+                <div class="dashboard-card secondary" onclick="startNewSession()">
+                    <div class="card-icon">🎯</div>
+                    <h3>New Assessment</h3>
+                    <p>Test your knowledge with comprehensive questions</p>
+                    <button class="card-btn">Take Test</button>
+                </div>
+                
+                <div class="dashboard-card quaternary" onclick="startReviewSession()" id="reviewCard">
+                    <div class="card-icon">🔄</div>
+                    <h3>Review Missed Questions</h3>
+                    <p>Practice questions you got wrong in your last session</p>
+                    <button class="card-btn">Start Review</button>
+                </div>
+                
+                <div class="dashboard-card tertiary" onclick="showHistory()">
+                    <div class="card-icon">📊</div>
+                    <h3>Session History</h3>
+                    <p>Review your progress and past performance</p>
+                    <button class="card-btn">View History</button>
+                </div>
+                
+                <div class="dashboard-card rankings">
+                    <div class="card-icon">🏆</div>
+                    <h3>Global Rankings</h3>
+                    <p>See how you rank against other learners worldwide</p>
+                    <button onclick="showUserSettings()" class="card-btn secondary">Settings</button>
+                </div>
+            </div>
+
+            <!-- Global Rankings Section -->
+            <div id="globalRankings" class="global-rankings-section">
+                <!-- Rankings will be loaded here by JavaScript -->
+            </div>
+            
+            <div id="history-section" class="history-section hidden">
+                <h2>Assessment History</h2>
+                <div id="history-list" class="history-list"></div>
+                <button class="back-btn" onclick="hideHistory()">Back to Dashboard</button>
+            </div>
+        `;
+        
+        // Need to reload rankings after restoring dashboard
+        setTimeout(() => {
+            if (window.loadGlobalRankings) {
+                loadGlobalRankings();
+            }
+        }, 100);
+    }
 }
 
 function updateDashboardReviewCard() {
@@ -68,6 +284,97 @@ function showLearning() {
 }
 
 function startNewSession() {
+    // Check if user has entered a name for rankings
+    const savedUserName = localStorage.getItem('aiQuizUserName');
+    
+    if (!savedUserName) {
+        showUserNameDialog();
+        return;
+    }
+    
+    beginSession();
+}
+
+function showUserNameDialog() {
+    // Show dashboard view first
+    DOMUtils.showView('dashboard');
+    
+    const dashboard = document.getElementById('dashboard');
+    dashboard.innerHTML = `
+        <div class="quiz-container">
+            <div class="user-name-dialog">
+                <h2>🏆 Join the Global Rankings!</h2>
+                <p>Enter your name or nickname to compete with other learners worldwide.</p>
+                
+                <div class="name-input-section">
+                    <input 
+                        type="text" 
+                        id="userNameInput" 
+                        placeholder="Enter your name or nickname"
+                        maxlength="20"
+                        autocomplete="off"
+                    />
+                    <div class="name-requirements">
+                        <small>• 2-20 characters • Letters, numbers, spaces allowed</small>
+                    </div>
+                </div>
+                
+                <div class="dialog-actions">
+                    <button onclick="saveUserNameAndStart()" class="btn-primary" id="confirmNameBtn">
+                        Start Assessment
+                    </button>
+                    <button onclick="showDashboard()" class="btn-secondary">
+                        Back to Dashboard
+                    </button>
+                </div>
+                
+                <div class="privacy-note">
+                    <small>🔒 Your name will be visible in global rankings with your scores</small>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Focus on input and add enter key listener
+    const nameInput = document.getElementById('userNameInput');
+    nameInput.focus();
+    nameInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            saveUserNameAndStart();
+        }
+    });
+    
+    nameInput.addEventListener('input', validateNameInput);
+}
+
+function validateNameInput() {
+    const nameInput = document.getElementById('userNameInput');
+    const confirmBtn = document.getElementById('confirmNameBtn');
+    const name = nameInput.value.trim();
+    
+    const isValid = name.length >= 2 && name.length <= 20 && /^[a-zA-Z0-9\s]+$/.test(name);
+    
+    confirmBtn.disabled = !isValid;
+    confirmBtn.style.opacity = isValid ? '1' : '0.5';
+    confirmBtn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+}
+
+function saveUserNameAndStart() {
+    const nameInput = document.getElementById('userNameInput');
+    const name = nameInput.value.trim();
+    
+    if (name.length < 2 || name.length > 20 || !/^[a-zA-Z0-9\s]+$/.test(name)) {
+        notificationManager.error('Please enter a valid name (2-20 characters, letters and numbers only)');
+        return;
+    }
+    
+    localStorage.setItem('aiQuizUserName', name);
+    notificationManager.success(`Welcome, ${name}! Starting your assessment...`);
+    
+    beginSession();
+}
+
+function beginSession() {
     // Reset quiz state
     currentQuestion = 0;
     correctAnswers = 0;
@@ -85,6 +392,9 @@ function startNewSession() {
 
     // Set session time
     DOMUtils.setText('sessionTime', new Date().toLocaleTimeString());
+
+    // Start timer
+    startTimer();
 
     // Start quiz
     displayQuestion();
@@ -117,6 +427,9 @@ function startReviewSession() {
 
     // Set session time
     DOMUtils.setText('sessionTime', new Date().toLocaleTimeString());
+
+    // Start timer
+    startTimer();
 
     // Start quiz
     displayQuestion();
@@ -736,66 +1049,163 @@ function nextQuestion() {
 
 function updateStats() {
     const questionsAnswered = correctAnswers + wrongAnswers;
-    const completionPercentage = questionsAnswered > 0 ? Math.round((questionsAnswered / currentQuestions.length) * 100) : 0;
+    const accuracyPercentage = questionsAnswered > 0 ? Math.round((correctAnswers / questionsAnswered) * 100) : 0;
 
     DOMUtils.setText('currentQ', `${currentQuestion + 1}/${currentQuestions.length}`);
     DOMUtils.setText('totalQ', currentQuestions.length.toString());
-    DOMUtils.setText('score', `${completionPercentage}%`);
+    DOMUtils.setText('score', `${accuracyPercentage}%`);
     DOMUtils.setText('correct', correctAnswers.toString());
     DOMUtils.setText('wrong', wrongAnswers.toString());
 }
 
 function endQuiz() {
+    // Stop the timer
+    stopTimer();
+    
     const sessionDuration = Math.floor((Date.now() - sessionStartTime) / 1000);
     const questionsAnswered = correctAnswers + wrongAnswers;
+    const accuracy = (correctAnswers / questionsAnswered) * 100;
     const percentage = QuizUtils.calculatePercentage(correctAnswers, currentQuestions.length);
+    const timePerQuestion = sessionDuration / questionsAnswered;
+    
+    // Calculate overall score and performance metrics
+    const overallScore = calculateOverallScore(accuracy, sessionDuration, questionsAnswered);
+    const performanceGrade = getPerformanceGrade(overallScore);
+    const speedRating = getSpeedRating(timePerQuestion);
 
     // Hide quiz container, show final results
     document.getElementById('quiz-container').classList.add('hidden');
     document.getElementById('final').classList.remove('hidden');
 
-    // Update final scores with completion info
-    const completionText = questionsAnswered < currentQuestions.length ?
-        `${percentage}% (${questionsAnswered}/${currentQuestions.length} answered)` :
-        `${percentage}%`;
+    // Update final scores with enhanced statistics
+    const finalContainer = document.getElementById('final');
+    
+    // Format time display
+    const minutes = Math.floor(sessionDuration / 60);
+    const seconds = sessionDuration % 60;
+    const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    finalContainer.innerHTML = `
+        <h2>🎯 Assessment Complete!</h2>
+        
+        <!-- Overall Score Section -->
+        <div class="overall-score-section">
+            <div class="overall-score-card">
+                <div class="overall-score-header">
+                    <h3>Overall Performance Score</h3>
+                    <div class="score-breakdown">Accuracy (70%) + Speed (30%)</div>
+                </div>
+                <div class="overall-score-display">
+                    <div class="score-value" style="color: ${performanceGrade.color}">${overallScore}/100</div>
+                    <div class="score-grade" style="color: ${performanceGrade.color}">
+                        Grade: ${performanceGrade.grade}
+                    </div>
+                    <div class="score-message" style="color: ${performanceGrade.color}">
+                        ${performanceGrade.message}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed Statistics -->
+        <div class="results-summary">
+            <div class="result-card primary">
+                <div class="result-value">${accuracy.toFixed(1)}%</div>
+                <div class="result-label">Accuracy</div>
+            </div>
+            
+            <div class="result-card">
+                <div class="result-value">${correctAnswers}</div>
+                <div class="result-label">Correct</div>
+            </div>
+            
+            <div class="result-card">
+                <div class="result-value">${wrongAnswers}</div>
+                <div class="result-label">Incorrect</div>
+            </div>
+            
+            <div class="result-card">
+                <div class="result-value">${timeDisplay}</div>
+                <div class="result-label">Total Time</div>
+            </div>
+            
+            <div class="result-card">
+                <div class="result-value">${timePerQuestion.toFixed(1)}s</div>
+                <div class="result-label">Avg per Question</div>
+            </div>
+            
+            <div class="result-card speed-rating" style="border-color: ${speedRating.color}">
+                <div class="result-value" style="color: ${speedRating.color}">
+                    ${speedRating.icon}
+                </div>
+                <div class="result-label" style="color: ${speedRating.color}">
+                    ${speedRating.rating}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Analysis -->
+        <div class="performance-analysis">
+            <h4>📊 Performance Analysis</h4>
+            <div class="analysis-metrics">
+                <div class="metric">
+                    <span class="metric-label">Accuracy Component:</span>
+                    <span class="metric-value">${(accuracy * 0.7).toFixed(1)} points</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Speed Component:</span>
+                    <span class="metric-value">${(overallScore - (accuracy * 0.7)).toFixed(1)} points</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Time vs Baseline:</span>
+                    <span class="metric-value">${timePerQuestion > 45 ? 'Slower' : 'Faster'} than 45s target</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Questions Answered:</span>
+                    <span class="metric-value">${questionsAnswered} / ${currentQuestions.length} ${questionsAnswered < currentQuestions.length ? '(Early finish)' : ''}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="final-actions">
+            ${incorrectQuestions.length > 0 && !isReviewMode ? `
+            <button id="reviewBtn" onclick="startReviewSession()" class="btn-secondary">
+                📚 Review ${incorrectQuestions.length} Incorrect Questions
+            </button>
+            ` : ''}
+            
+            <button onclick="showDashboard()" class="btn-primary">Return to Dashboard</button>
+            <button onclick="restart()" class="btn-secondary">New Assessment</button>
+        </div>
+    `;
 
-    DOMUtils.setText('final-score', completionText);
-    DOMUtils.setText('final-correct', correctAnswers.toString());
-    DOMUtils.setText('final-wrong', wrongAnswers.toString());
-
-    // Adjust message for partial completion
-    let message = QuizUtils.getPerformanceMessage(percentage);
-    if (questionsAnswered < currentQuestions.length) {
-        message = `Session completed early. ${message}`;
-    }
-    DOMUtils.setText('final-message', message);
-
-    // Save session
-    sessionManager.saveSession({
+    // Save session with enhanced data
+    const sessionData = {
         correctAnswers: correctAnswers,
         wrongAnswers: wrongAnswers,
         totalQuestions: currentQuestions.length,
         questionsAnswered: questionsAnswered,
+        accuracy: accuracy,
         percentage: percentage,
+        overallScore: overallScore,
+        timePerQuestion: timePerQuestion,
         duration: sessionDuration,
         date: new Date().toLocaleDateString(),
         completed: questionsAnswered === currentQuestions.length,
         incorrectQuestions: incorrectQuestions,
         isReviewMode: isReviewMode
-    });
+    };
+    
+    sessionManager.saveSession(sessionData);
+    
+    // Save to global Firebase rankings (only if not review mode)
+    if (!isReviewMode) {
+        saveToGlobalRankings(sessionData);
+    }
 
     const completionMessage = questionsAnswered < currentQuestions.length ?
-        `Session finished early! You scored ${percentage}% (${correctAnswers}/${currentQuestions.length} correct).` :
-        `Assessment completed! You scored ${percentage}%`;
-
-    // Show/hide review button based on incorrect questions
-    const reviewBtn = document.getElementById('reviewBtn');
-    if (incorrectQuestions.length > 0 && !isReviewMode) {
-        reviewBtn.style.display = 'block';
-        reviewBtn.textContent = `Review ${incorrectQuestions.length} Incorrect Questions`;
-    } else {
-        reviewBtn.style.display = 'none';
-    }
+        `Session finished early! Overall score: ${overallScore}/100 (Grade: ${performanceGrade.grade})` :
+        `Assessment completed! Overall score: ${overallScore}/100 (Grade: ${performanceGrade.grade})`;
 
     notificationManager.success(completionMessage);
 }
@@ -862,6 +1272,19 @@ window.hideHistory = hideHistory;
 window.submitAnswer = submitAnswer;
 window.restart = restart;
 window.finishSession = finishSession;
+window.saveUserNameAndStart = saveUserNameAndStart;
+window.validateNameInput = validateNameInput;
+
+// Initialize IP detection when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Detect IP for access control
+    detectUserIP();
+    
+    // Also call update after a delay to catch elements that load later
+    setTimeout(() => {
+        updateUIBasedOnPermissions();
+    }, 2000);
+});
 
 // Debug: Test that functions are available
 console.log('Functions exported to window:', {

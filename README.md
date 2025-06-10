@@ -1,4 +1,4 @@
-# AI Learning Platform
+# AI Learning Platform - https://ai-quiz-ubb.netlify.app/
 
 A comprehensive web-based learning platform designed to help students master Artificial Intelligence concepts through interactive learning modules and gamified quizzes.
 

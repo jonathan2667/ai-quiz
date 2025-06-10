@@ -11,6 +11,10 @@
         <!-- Dashboard View -->
         <div id="dashboard" class="view">
             <div class="header">
+                <div class="live-users">
+                    <span class="users-count" id="userCount">• 0</span>
+                    <span class="users-label">users practicing</span>
+                </div>
                 <h1 class="title">AI Learning Platform</h1>
                 <p class="subtitle">Master artificial intelligence concepts through structured learning and assessment</p>
             </div>
@@ -43,6 +47,18 @@
                     <p>Review your progress and past performance</p>
                     <button class="card-btn">View History</button>
                 </div>
+                
+                <div class="dashboard-card rankings">
+                    <div class="card-icon">🏆</div>
+                    <h3>Global Rankings</h3>
+                    <p>See how you rank against other learners worldwide</p>
+                    <button onclick="showUserSettings()" class="card-btn secondary">Settings</button>
+                </div>
+            </div>
+
+            <!-- Global Rankings Section -->
+            <div id="globalRankings" class="global-rankings-section">
+                <!-- Rankings will be loaded here by JavaScript -->
             </div>
             
             <div id="history-section" class="history-section hidden">
@@ -80,7 +96,13 @@
         <div id="quiz" class="view hidden">
             <div class="header">
                 <h1 class="title">AI Knowledge Assessment</h1>
-                <p class="subtitle">Session started: <span id="sessionTime"></span></p>
+                <div class="session-info">
+                    <p class="subtitle">Session started: <span id="sessionTime"></span></p>
+                    <div class="timer-display">
+                        <span class="timer-icon">⏱️</span>
+                        <span class="timer-text" id="elapsedTimer">00:00</span>
+                    </div>
+                </div>
                 <div class="header-buttons">
                     <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
                     <button class="finish-btn" onclick="finishSession()" id="finishBtn">Finish Session</button>
@@ -98,7 +120,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="score">0%</div>
-                    <div class="stat-label">Progress</div>
+                    <div class="stat-label">Accuracy</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="correct">0</div>
@@ -162,13 +184,39 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Made by Jonathan Mogovan</p>
+        <div class="footer-content">
+            
+            <div class="contributors">
+                <h4>Contributors</h4>
+                <div class="contributor-list">
+                    <div class="contributor">
+                        <span class="contributor-name">Jonathan Mogovan</span>
+                        <span class="contributor-handle">@jonathan2667</span>
+                    </div>
+                    <div class="contributor">
+                        <span class="contributor-name">Teo</span>
+                        <span class="contributor-handle">@Oancea-Teodora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="config.js"></script>
+    
+    <!-- User Counter Script -->
+    <script src="user-counter.js"></script>
 
     <!-- Module Scripts -->
     <script src="questions.js"></script>
     <script src="learning-content.js"></script>
     <script src="utils.js"></script>
+    <script src="firebase-rankings.js"></script>
     <script src="app.js"></script>
 </body>
 </html> 
