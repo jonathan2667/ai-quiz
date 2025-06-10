@@ -964,7 +964,7 @@ const questions = [
     "image": "imageQ2.png",
     "answers": [
       "μ_young(35) = 0.6; μ_adult(35) = 1; μ_middle_age(35) = 0.3; μ_old(35) = 0",
-      "μ_young(35) = 0; μ_adult(35) = 0.1; μ_middle_age(35) = 0; μ_old(35) = 0",
+      "μ_young(35) = 0; μ_adult(35) = 1; μ_middle_age(35) = 0; μ_old(35) = 0",
       "μ_young(35) = 0.6; μ_adult(35) = 0.1; μ_middle_age(35) = 0.3; μ_old(35) = 0",
       "None of the above"
     ],
