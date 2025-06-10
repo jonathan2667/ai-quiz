@@ -899,7 +899,7 @@ const questions = [
       "The actions usually involve adding or deleting items from working memory",
       "Rules are written as left-hand side (LHS) ⇒ right-hand side (RHS)"
     ],
-    "correct": "bc"
+    "correct": "abcd"
   },
   {
     "question": "For a Genetic Programming algorithm identify the correct statement(s):",
@@ -964,7 +964,7 @@ const questions = [
     "image": "imageQ2.png",
     "answers": [
       "μ_young(35) = 0.6; μ_adult(35) = 1; μ_middle_age(35) = 0.3; μ_old(35) = 0",
-      "μ_young(35) = 0; μ_adult(35) = 0.1; μ_middle_age(35) = 0; μ_old(35) = 0",
+      "μ_young(35) = 0; μ_adult(35) = 1; μ_middle_age(35) = 0; μ_old(35) = 0",
       "μ_young(35) = 0.6; μ_adult(35) = 0.1; μ_middle_age(35) = 0.3; μ_old(35) = 0",
       "None of the above"
     ],
