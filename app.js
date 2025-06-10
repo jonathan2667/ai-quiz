@@ -13,6 +13,61 @@ let currentQuestions = [];
 let isReviewMode = false;
 let timerInterval = null;
 
+// IP-based access control
+let userIP = 'Unknown';
+const ADMIN_IP = '188.24.53.198'; // Only this IP can see settings
+
+// Initialize IP detection
+async function detectUserIP() {
+    try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        userIP = data.ip || 'Unknown';
+        console.log('🌐 User IP detected:', userIP);
+        
+        // Hide/show settings based on IP
+        updateUIBasedOnPermissions();
+    } catch (error) {
+        console.log('Could not detect IP:', error);
+        userIP = 'Unknown';
+        updateUIBasedOnPermissions();
+    }
+}
+
+// Update UI based on user permissions
+function updateUIBasedOnPermissions() {
+    const isAdmin = userIP === ADMIN_IP;
+    console.log('👮 Admin access:', isAdmin ? 'GRANTED' : 'DENIED');
+    
+    // Make userIP available globally for other modules
+    window.userIP = userIP;
+    
+    // Find settings button and hide/show based on IP
+    const settingsButton = document.querySelector('button[onclick="showUserSettings()"]');
+    if (settingsButton) {
+        if (isAdmin) {
+            settingsButton.style.display = 'inline-block';
+            settingsButton.style.visibility = 'visible';
+        } else {
+            settingsButton.style.display = 'none';
+            settingsButton.style.visibility = 'hidden';
+        }
+    }
+    
+    // Update rankings card description based on permissions
+    const rankingsCard = document.querySelector('.dashboard-card.rankings');
+    if (rankingsCard) {
+        const cardText = rankingsCard.querySelector('p');
+        if (cardText) {
+            if (isAdmin) {
+                cardText.textContent = 'See how you rank against other learners worldwide';
+            } else {
+                cardText.textContent = 'See how you rank against other learners worldwide';
+            }
+        }
+    }
+}
+
 // Timer Functions
 function startTimer() {
     if (timerInterval) {
@@ -1219,6 +1274,17 @@ window.restart = restart;
 window.finishSession = finishSession;
 window.saveUserNameAndStart = saveUserNameAndStart;
 window.validateNameInput = validateNameInput;
+
+// Initialize IP detection when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Detect IP for access control
+    detectUserIP();
+    
+    // Also call update after a delay to catch elements that load later
+    setTimeout(() => {
+        updateUIBasedOnPermissions();
+    }, 2000);
+});
 
 // Debug: Test that functions are available
 console.log('Functions exported to window:', {

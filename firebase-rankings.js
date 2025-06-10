@@ -190,6 +190,13 @@ function updateRankingsFilter(filterType) {
 
 // User settings management
 function showUserSettings() {
+    // Check if user has admin access
+    if (typeof window.userIP !== 'undefined' && window.userIP !== '188.24.53.198') {
+        console.log('🚫 Settings access denied for IP:', window.userIP);
+        notificationManager.error('Settings access is restricted');
+        return;
+    }
+    
     const currentName = localStorage.getItem('aiQuizUserName');
     
     // Show dashboard view first

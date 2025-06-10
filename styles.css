@@ -1365,6 +1365,18 @@ body {
     }
 }
 
+/* Access Control Styles */
+.admin-only {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.settings-restricted {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
 /* Footer */
 .footer {
     text-align: center;
