@@ -781,7 +781,7 @@ const questions = [
       "We emphasize the features.",
       "We make the representation dependent on small translations of the input."
     ],
-    "correct": "a"
+    "correct": "ac"
   },
 
 
