@@ -1,17 +1,6 @@
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyDT41GbcZPK3YbhPy4aIKtkrCumslWTV5A",
-    authDomain: "ai-quiz-ubb.firebaseapp.com",
-    databaseURL: "https://ai-quiz-ubb-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "ai-quiz-ubb",
-    storageBucket: "ai-quiz-ubb.firebasestorage.app",
-    messagingSenderId: "831163681456",
-    appId: "1:831163681456:web:1696bbbf75b40b31710975",
-    measurementId: "G-EHX7QDRT8T"
-};
-
+// Firebase configuration is loaded from config.js
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(window.firebaseConfig);
 const database = firebase.database();
 
 class UserCounter {
