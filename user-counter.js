@@ -4,14 +4,14 @@ let database;
 
 // Fallback configuration for development (remove in production)
 const fallbackConfig = {
-    apiKey: "AIzaSyDT41GbcZPK3YbhPy4aIKtkrCumslWTV5A",
-    authDomain: "ai-quiz-ubb.firebaseapp.com",
-    databaseURL: "https://ai-quiz-ubb-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "ai-quiz-ubb",
-    storageBucket: "ai-quiz-ubb.firebasestorage.app",
-    messagingSenderId: "831163681456",
-    appId: "1:831163681456:web:1696bbbf75b40b31710975",
-    measurementId: "G-EHX7QDRT8T"
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "your-project.firebaseapp.com",
+    databaseURL: "https://your-project-default-rtdb.region.firebasedatabase.app",
+    projectId: "your-project-id",
+    storageBucket: "your-project.firebasestorage.app",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdefghijklmnop",
+    measurementId: "G-XXXXXXXXXX"
 };
 
 function initializeFirebaseConnection() {
