@@ -80,7 +80,7 @@ const questions = [
       "the current position of the particle",
       "none of the above"
     ],
-    "correct": "b"
+    "correct": "abc"
   },
   {
     "question": "The limited model capacity of an ANN can be overcome by:",
@@ -521,7 +521,7 @@ const questions = [
       "We avoid underfitting the model",
       "None of the above"
     ],
-    "correct": "ac"
+    "correct": "a"
   },
   {
     "question": "How is the objective of a machine learning algorithm typically represented?",
@@ -1312,6 +1312,16 @@ const questions = [
       "Establish and backward propagate the error."
     ],
     "correct": "bcd"
+  },
+  {
+    "question": "The ReLu function:",
+    "answers": [
+      "Provides sparsity since y=0 when x>0.",
+      "Has a vanishing gradient when x>0.",
+      "Corrects the problems that occur at sigmoid function.",
+      "It is a linear activation function."
+    ],
+    "correct": "c"
   },
 ];
 
