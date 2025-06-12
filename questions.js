@@ -391,7 +391,7 @@ const questions = [
       "There are no individuals in ANN.",
       "An array of bits that encode proper information related to the solution."
     ],
-    "correct": "b"
+    "correct": "c"
   },
   {
     "question": "On a ConvNet, the feature learning:",
@@ -501,7 +501,7 @@ const questions = [
       "The preprocessing required in a ConvNet is much lower as compared to other classification algorithms",
       "None of the above"
     ],
-    "correct": "ac"
+    "correct": "c"
   },
   {
     "question": "What can be used when comparing two algorithms?",
@@ -691,7 +691,7 @@ const questions = [
       "Alignment with the desired data.",
       "Computational complexity of the target objective."
     ],
-    "correct": "b"
+    "correct": "c"
   },
   {
     "question": "Choose the right compatibility between the output layer's activation function and error function:",
@@ -781,7 +781,7 @@ const questions = [
       "We emphasize the features.",
       "We make the representation dependent on small translations of the input."
     ],
-    "correct": "ac"
+    "correct": "a"
   },
 
 
